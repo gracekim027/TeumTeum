@@ -1,16 +1,15 @@
 //
-//  TimeOptionButton.swift
+//  TimeSelectionButton.swift
 //  piyakton
 //
 //  Created by Grace Kim on 1/11/25.
 //
+
 import SwiftUI
 
-struct TimeOptionButton: View {
-    let minutes: Int
-    let description: String
-    let emoji: String
-    let background: Color
+struct TimeSelectionButton: View {
+    
+    let requiredTime: RequiredTime
     let action: () -> Void
     
     var body: some View {
@@ -18,15 +17,15 @@ struct TimeOptionButton: View {
             action()
         } label: {
             VStack(alignment: .center, spacing: 4) {
-                Text("\(minutes)분")
+                Text("\(requiredTime.rawValue)분")
                     .font(.body1SemiBold)
                     .foregroundStyle(Color.gray900)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(background)
+                    .background(requiredTime.chipColor)
                     .clipShape(RoundedRectangle(cornerRadius: 80))
                 
-                Text(description + " " + emoji)
+                Text(requiredTime.description)
                     .font(.body2Medium)
                     .foregroundStyle(Color.gray400)
             }

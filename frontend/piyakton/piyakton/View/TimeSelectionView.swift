@@ -10,8 +10,8 @@ import SwiftUI
 struct TimeSelectionView: View {
     
     @Binding var isPresented: Bool
-    @Binding var selectedTime: Int?
-    let onTimeSelected: () -> Void
+    @Binding var selectedTime: RequiredTime?
+    let select: () -> Void
     
     var body: some View {
         VStack(alignment: .center, spacing: 24) {
@@ -22,50 +22,41 @@ struct TimeSelectionView: View {
                 Text("몇 분으로 쪼개\n학습하고 싶으신가요?")
                     .foregroundStyle(Color.gray900)
                     .font(.header2Bold)
+                    .multilineTextAlignment(.center)
             }
             
             VStack(spacing: 12) {
-                TimeOptionButton(
-                    minutes: 3,
-                    description: "짧은 틈에 빠르게",
-                    emoji: "🐰",
-                    background: .lime600,
+                TimeSelectionButton(
+                    requiredTime: .short,
                     action: {
-                        selectedTime = 3
+                        selectedTime = .short
                         isPresented = false
-                        onTimeSelected()
+                        select()
                     }
                 )
                 
-                TimeOptionButton(
-                    minutes: 5,
-                    description: "적당한 틈에 부담없이",
-                    emoji: "🐱",
-                    background: .orange600,
+                TimeSelectionButton(
+                    requiredTime: .medium,
                     action: {
-                        selectedTime = 5
+                        selectedTime = .medium
                         isPresented = false
-                        onTimeSelected()
+                        select()
                     }
                 )
                 
-                TimeOptionButton(
-                    minutes: 10,
-                    description: "넉넉한 틈에 여유롭게",
-                    emoji: "🐢",
-                    background: .coral600,
+                TimeSelectionButton(
+                    requiredTime: .long,
                     action: {
-                        selectedTime = 10
+                        selectedTime = .long
                         isPresented = false
-                        onTimeSelected()
+                        select()
                     }
                 )
             }
         }
         .padding(24)
         .frame(width: 345)
-        .background(Color.whiteOpacity800)
+        .background(Color.whiteOpacity900)
         .cornerRadius(16)
-        .blur(radius: CustomBlur.medium.radius)
     }
 }

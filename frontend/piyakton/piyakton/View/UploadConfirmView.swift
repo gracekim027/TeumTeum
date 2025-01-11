@@ -46,6 +46,9 @@ struct UploadConfirmView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 100))
             }
         }
+        .background(
+            Image("gradient").clipped()
+        )
     }
 }
 
