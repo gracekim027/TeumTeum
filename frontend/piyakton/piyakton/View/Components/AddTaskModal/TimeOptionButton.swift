@@ -10,33 +10,31 @@ struct TimeOptionButton: View {
     let minutes: Int
     let description: String
     let emoji: String
-    let isSelected: Bool
+    let background: Color
     let action: () -> Void
     
     var body: some View {
-        Button(action: action) {
-            HStack {
-                VStack(alignment: .center) {
-                    Text("\(minutes)분")
-                        .font(.title)
-                        .bold()
-                    
-                    HStack {
-                        Text(description)
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                        Text(emoji)
-                    }
-                }
+        Button {
+            action()
+        } label: {
+            VStack(alignment: .center, spacing: 4) {
+                Text("\(minutes)분")
+                    .font(.body1SemiBold)
+                    .foregroundStyle(Color.gray900)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(background)
+                    .clipShape(RoundedRectangle(cornerRadius: 80))
+                
+                Text(description + " " + emoji)
+                    .font(.body2Medium)
+                    .foregroundStyle(Color.gray400)
             }
             .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color.white)
-            .cornerRadius(15)
-            .overlay(
-                RoundedRectangle(cornerRadius: 15)
-                    .stroke(isSelected ? Color.blue : Color.gray.opacity(0.3), lineWidth: 2)
-            )
+            .padding(.vertical, 10)
+            .padding(.horizontal, 16)
+            .background(Color.whiteOpacity800)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
     }
 }
