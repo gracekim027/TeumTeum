@@ -42,6 +42,14 @@ enum RequiredTime: Int, Codable {
         case .long: return Color.coral600
         }
     }
+    
+    var description: String {
+        switch self {
+        case .short: return "짧은 틈에 빠르게 🐇"
+        case .medium: return "적당한 틈에 부담없이 🐈"
+        case .long: return "넉넉한 틈에 여유롭게 🐢"
+        }
+    }
 }
 
 struct Article: Codable {

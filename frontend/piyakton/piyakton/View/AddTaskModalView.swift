@@ -82,20 +82,6 @@ struct AddTaskModalView: View {
                         }
                     }
                 }
-                .onAppear {
-                    //viewModel.showConfirmation = true
-                }
-                
-                if viewModel.isShowingTimeSelection {
-                    TimeSelectionView(
-                        isPresented: $viewModel.isShowingTimeSelection,
-                        selectedTime: $viewModel.selectedTime,
-                        onTimeSelected: {
-                            viewModel.isShowingTimeSelection = false
-                            viewModel.showConfirmation = true // Trigger confirmation content
-                        }
-                    )
-                }
             }
             .sheet(isPresented: $viewModel.isShowingFilePicker) {
                 DocumentPicker(types: [.pdf, .movie]) { urls in
