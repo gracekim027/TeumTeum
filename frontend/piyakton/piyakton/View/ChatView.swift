@@ -12,20 +12,29 @@ struct ChatView: View {
     @Binding var chatList: [Chat]
     
     @State private var currentMessage: String = ""
+    @State private var lastMessageId: Int?
     
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                ScrollView(.vertical) {
-                    VStack(spacing: 32) {
-                        ForEach(chatList, id: \.self) { chat in
-                            chatBubbleGroup(received: chat.received, chat)
+            ScrollViewReader { proxy in
+                VStack(spacing: 0) {
+                    ScrollView(.vertical) {
+                        VStack(spacing: 32) {
+                            ForEach(chatList, id: \.self) { chat in
+                                chatBubbleGroup(received: chat.received, chat)
+                                    .id(chat.hashValue)
+                            }
                         }
                     }
                 }
                 .padding(.vertical, 32)
+                .onChange(of: chatList) { _, newList in
+                    if let id = newList.last?.hashValue {
+                        proxy.scrollTo(id)
+                    }
+                }
                 
                 MessageField(text: $currentMessage, placeholder: "궁금한 걸 자유롭게 입력해주세요") {
                     guard let lastChat = chatList.last else { return }
