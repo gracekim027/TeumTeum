@@ -26,21 +26,8 @@ class TaskDecompositionSystem:
         audio_files: List[str],
         user_goal: str,
         unit_time: int,
-        model: str = 'gpt-4'
+        model: str = 'gpt-4o'
     ) -> Dict:
-        """
-        Process content from a file and break it into subtasks.
-        
-        Args:
-            file_path: Path to the input file
-            file_type: Type of file ('pdf' or 'audio')
-            user_goal: User's learning goal
-            unit_time: Time per subtask in minutes
-            model: Model to use for processing
-            
-        Returns:
-            Dict containing summary and subtasks
-        """
         
         try:
             pdf_raws = await self.file_manager.load_file(pdf_files)
@@ -141,8 +128,8 @@ async def main():
         system = TaskDecompositionSystem()
 
         # Example usage with a PDF file
-        pdf_path = "sample/lecture.pdf"
-        audio_path = "sample/lecture.m4a"
+        pdf_path = "/Users/grace/gdc_hakathon/backend/LLM/Lecture note 8.pdf"
+        audio_path = "/Users/grace/gdc_hakathon/backend/LLM/sample_audio.m4a"
         if Path(pdf_path).exists():
             logger.info("Processing PDF file...")
             result = await system.process_content_from_file(

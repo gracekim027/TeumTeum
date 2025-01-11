@@ -28,25 +28,35 @@ class LLMWrapper:
         # Initialize OpenAI client
         self.openai_client = openai.OpenAI(api_key=self.openai_api_key)
         
+        try:
+            instructions_path = Path(__file__).parent / "pdf_assistant_instructions.txt"
+            with open(instructions_path, 'r', encoding='utf-8') as f:
+                pdf_instructions = f.read()
+        except FileNotFoundError:
+            self.logger.warning("PDF instructions file not found, using default instructions")
+            pdf_instructions = "An assistant to extract the contents of PDF files."
+        except Exception as e:
+            self.logger.error(f"Error loading PDF instructions: {e}")
+            pdf_instructions = "An assistant to extract the contents of PDF files."
+        
         # Initialize assistant
         self.assistant = self.openai_client.beta.assistants.create(
             name="PDF assistant",
-            instructions="An assistant to extract the contents of PDF files.", #TODO
+            instructions=pdf_instructions,
             model="gpt-4o",
             tools=[{"type": "file_search"}],
         )
         
         # Initialize LangChain models
         self.models = {
-            'gpt-4': self._init_openai_model("gpt-4-turbo-preview"),
-            'gpt-3.5': self._init_openai_model("gpt-3.5-turbo"),
+            'gpt-4o': self._init_openai_model(),
             'claude': self._init_claude_model()
         }
         
-    def _init_openai_model(self, model_name: str) -> ChatOpenAI:
+    def _init_openai_model(self) -> ChatOpenAI:
         """Initialize OpenAI model."""
         return ChatOpenAI(
-            model_name=model_name,
+            model_name="gpt-4o",
             openai_api_key=self.openai_api_key,
             temperature=0.7
         )
@@ -54,7 +64,7 @@ class LLMWrapper:
     def _init_claude_model(self) -> ChatAnthropic:
         """Initialize Claude model."""
         return ChatAnthropic(
-            model="claude-3-sonnet-20240229",
+            model="claude-3-5-sonnet-20241022",
             anthropic_api_key=self.anthropic_api_key,
             temperature=0.7
         )
@@ -66,42 +76,50 @@ class LLMWrapper:
         return self.models[model_name]
     
     def add_pdf(
-        self,
-        file_streams: List[Any]
-    ) :
-        # Upload files and add them to vector store
-        vector_store = self.openai_client.beta.vector_stores.create(name="PDF")
-        file_batch = self.openai_client.beta.vector_stores.file_batches.upload_and_poll(
-            vector_store_id=vector_store.id, files=file_streams
-        )
-        
-        # update pdf assistant to use vector store
-        self.assistant = self.openai_client.beta.assistants.update(
-            assistant_id=self.assistant.id,
-            tool_resources={"file_search": {"vector_store_ids": [vector_store.id]}},
-        )
-        
-        self.logger.info("PDF added")
+    self,
+    file_streams: List[Any]
+) -> None:
+        """Upload PDF files and add them to vector store."""
+        try:
+            # Upload files and add them to vector store
+            vector_store = self.openai_client.beta.vector_stores.create(name="PDF")
+            file_batch = self.openai_client.beta.vector_stores.file_batches.upload_and_poll(
+                vector_store_id=vector_store.id, files=file_streams
+            )
+            
+            # update pdf assistant to use vector store
+            self.assistant = self.openai_client.beta.assistants.update(
+                assistant_id=self.assistant.id,
+                tool_resources={"file_search": {"vector_store_ids": [vector_store.id]}},
+            )
+            
+            self.logger.info("PDF added")
+        except Exception as e:
+            self.logger.error(f"Error adding PDF: {str(e)}")
+            raise
     
     async def get_completion(
-        self,
-        prompt: str,
-        model_name: str = 'gpt-4',
-        system_prompt: Optional[str] = None
-    ) -> str:
+    self,
+    prompt: str,
+    model_name: str = 'gpt-4o',
+    system_prompt: Optional[str] = None
+) -> str:
         """Get completion from specified model."""
         try:
             model = self.get_model(model_name)
             
-            messages = []
+            # For threads API, we'll combine system prompt and user prompt
+            thread_messages = []
             if system_prompt:
-                messages.append({"role": "system", "content": system_prompt})
-            messages.append({"role": "user", "content": prompt})
-            
+                combined_prompt = f"{system_prompt}\n\nUser Query: {prompt}"
+            else:
+                combined_prompt = prompt
+                
+            thread_messages.append({"role": "user", "content": combined_prompt})
             
             self.logger.info(f"Getting completion from {model_name}")
             # create thread to execute
-            thread = self.openai_client.beta.threads.create(messages=messages)
+            thread = self.openai_client.beta.threads.create(messages=thread_messages)
             run = self.openai_client.beta.threads.runs.create_and_poll(
                 thread_id=thread.id, assistant_id=self.assistant.id, timeout=1000
             )
@@ -115,7 +133,6 @@ class LLMWrapper:
             # Output text
             res_txt = messages[0].content[0].text.value
             return res_txt
-
             
         except Exception as e:
             self.logger.error(f"Error getting completion: {str(e)}")
@@ -164,57 +181,77 @@ class LLMWrapper:
             raise
 
 # Example usage
+# Initialize wrapper
 if __name__ == "__main__":
     import asyncio
-    
+    import logging
+    from pathlib import Path
+
     async def test_llm_wrapper():
         # Set up logging
         logging.basicConfig(
             level=logging.INFO,
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         )
-        logger = logging.getLogger(__name__)
         
-        try:
-            llm = LLMWrapper()
-            
-            # Test GPT-4
-            logger.info("Testing GPT-4...")
-            gpt_response = await llm.get_completion(
-                "Explain the concept of microservices in one paragraph.",
-                model_name='gpt-4'
-            )
-            logger.info("GPT-4 Response:\n%s", gpt_response)
-            
-            # Test Claude
-            logger.info("\nTesting Claude...")
-            claude_response = await llm.get_completion(
-                "Explain the concept of containerization in one paragraph.",
-                model_name='claude',
-                system_prompt="You are a helpful expert in software architecture."
-            )
-            logger.info("Claude Response:\n%s", claude_response)
-            
-            # Test audio transcription if you have an audio file
-            audio_file_path = "sample.mp3"
-            if Path(audio_file_path).exists():
-                logger.info("\nTesting audio transcription...")
-                with open(audio_file_path, "rb") as audio_file:
-                    transcript = await llm.transcribe_audio(audio_file)
-                logger.info("Transcription:\n%s", transcript)
-            
-            # Test text-to-speech
-            logger.info("\nTesting text-to-speech...")
-            speech_file = await llm.create_speech(
-                "Hello! This is a test of the text-to-speech system.",
-                voice="alloy",
-                output_path="test_speech.mp3"
-            )
-            logger.info(f"Speech saved to: {speech_file}")
-            
-        except Exception as e:
-            logger.error("Test failed: %s", str(e), exc_info=True)
-            raise
-
-    # Run the test
+        logger = logging.getLogger(__name__)
+        llm = LLMWrapper()
+        logger.info("LLM Wrapper initialized successfully")
+        
+        # Test 1: PDF Processing
+        logger.info("\n=== Testing PDF Processing ===")
+        pdf_path = Path("/Users/grace/gdc_hakathon/backend/LLM/hashing_pdf.pdf")
+        if pdf_path.exists():
+            with open(pdf_path, "rb") as pdf_file:
+                # Remove await here
+                llm.add_pdf([pdf_file])
+                logger.info("PDF added successfully")
+                
+                pdf_query = "What is the main topic of this document? Give a brief summary."
+                pdf_response = await llm.get_completion(
+                    prompt=pdf_query,
+                    model_name='gpt-4o'
+                )
+                logger.info(f"PDF Analysis Response:\n{pdf_response}")
+        else:
+            logger.warning(f"PDF file not found at {pdf_path}")
+                
+        # Test 2: Audio Transcription
+        logger.info("\n=== Testing Audio Transcription ===")
+        audio_path = Path("/Users/grace/gdc_hakathon/backend/LLM/hashing_audio.mp3")
+        if audio_path.exists():
+            with open(audio_path, "rb") as audio_file:
+                transcript = await llm.transcribe_audio(audio_file)
+                logger.info(f"Transcription Result:\n{transcript}")
+                
+                analysis_prompt = "Analyze the main points from this transcription:"
+                analysis_response = await llm.get_completion(
+                    prompt=f"{analysis_prompt}\n\n{transcript}",
+                    model_name='gpt-4o'
+                )
+                logger.info(f"Transcription Analysis:\n{analysis_response}")
+        else:
+            logger.warning(f"Audio file not found at {audio_path}")
+        
+        # Test 3: Different Models
+        logger.info("\n=== Testing Different Models ===")
+        test_prompt = "Explain the concept of neural networks in one paragraph."
+        
+        logger.info("Testing GPT-4...")
+        gpt4_response = await llm.get_completion(
+            prompt=test_prompt,
+            model_name='gpt-4o'
+        )
+        logger.info(f"GPT-4 Response:\n{gpt4_response}")
+        
+        logger.info("\nTesting Claude...")
+        claude_response = await llm.get_completion(
+            prompt=test_prompt,
+            model_name='claude',
+            system_prompt="You are an AI expert explaining concepts to a technical audience."
+        )
+        logger.info(f"Claude Response:\n{claude_response}")
+        
+        logger.info("\nAll tests completed successfully!")
+        
     asyncio.run(test_llm_wrapper())
