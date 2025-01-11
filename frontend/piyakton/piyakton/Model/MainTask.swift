@@ -5,7 +5,7 @@
 //  Created by Grace Kim on 1/11/25.
 //
 
-struct Task: Codable {
+struct MainTask: Codable {
     let id: String?
     let description: String // 사용자 넣은 설명
     let unitTime: Int // 사용자가 한 subtask 당 할당한 시간

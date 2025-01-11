@@ -35,17 +35,21 @@ struct AddTaskModalView: View {
                                 .foregroundColor(.gray)
                                 .multilineTextAlignment(.center)
                         }
-                        Button(action: {
-                                                        isPresented = false
-                                                    }) {
-                                                        Text("홈으로 돌아가기")
-                                                            .bold()
-                                                            .frame(maxWidth: .infinity)
-                                                            .padding()
-                                                            .background(Color.blue)
-                                                            .foregroundColor(.white)
-                                                            .cornerRadius(10)
-                                                    }
+                        
+                        Button {
+                            Task {
+                                //isPresented = false
+                                await viewModel.submitTask()
+                            }
+                        } label: {
+                            Text("홈으로 돌아가기")
+                                .bold()
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
                     }
                     .padding(24)
                 } else {

@@ -31,7 +31,7 @@ class AddTaskViewModel: ObservableObject {
     
     func loadSampleFiles() {
         if let pdfURL = Bundle.main.url(forResource: "pdf_sample", withExtension: "pdf") {
-            print("PDF file loaded successfully: \(pdfURL)")
+            //print("PDF file loaded successfully: \(pdfURL)")
             let file = UploadedFile(
                 id: UUID().uuidString,  // Using string ID instead of UUID
                 name: "pdf_sample.pdf",
@@ -44,7 +44,7 @@ class AddTaskViewModel: ObservableObject {
         }
         
         if let mp3URL = Bundle.main.url(forResource: "mp3_sample", withExtension: "mp3") {
-            print("MP3 file loaded successfully: \(mp3URL)")
+            //print("MP3 file loaded successfully: \(mp3URL)")
             let file = UploadedFile(
                 id: UUID().uuidString,  // Using string ID instead of UUID
                 name: "mp3_sample.mp3",
@@ -56,7 +56,7 @@ class AddTaskViewModel: ObservableObject {
             print("Failed to load MP3 file: mp3_sample.mp3 not found in bundle")
         }
         
-        print("Uploaded Files: \(uploadedFiles)")
+        //print("Uploaded Files: \(uploadedFiles)")
     }
 
     func addFile(_ url: URL) {

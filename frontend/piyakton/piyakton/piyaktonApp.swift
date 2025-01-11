@@ -20,6 +20,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct piyaktonApp: App {
     
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     private let container: DIContainer
     
     init() {

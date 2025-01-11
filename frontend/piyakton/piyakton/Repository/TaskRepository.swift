@@ -36,7 +36,7 @@ class TaskRepository {
         return docRef.documentID
     }
     
-    func observeTask(taskId: String, completion: @escaping (Task?) -> Void) {
+    func observeTask(taskId: String, completion: @escaping (MainTask?) -> Void) {
         db.collection(userCollection)
             .document(user)
             .collection(taskCollection)
@@ -50,7 +50,7 @@ class TaskRepository {
                 }
                 
                 // Convert the dictionary data to your Task model
-                let task = Task(
+                let task = MainTask(
                     id: taskId,
                     description: data["description"] as? String ?? "",
                     unitTime: data["unitTime"] as? Int ?? 0,
