@@ -10,17 +10,26 @@ import SwiftUI
 extension Font {
     static let header1Bold: Font = .custom(InteropFont.bold.name, size: 28)
     static let header2Bold: Font = .custom(InteropFont.bold.name, size: 24)
+    
+    static let title1SemiBold: Font = .custom(InteropFont.semiBold.name, size: 22)
     static let title2Bold: Font = .custom(InteropFont.bold.name, size: 20)
     static let title3SemiBold: Font = .custom(InteropFont.semiBold.name, size: 18)
+    
     static let body1Regular: Font = .custom(InteropFont.regular.name, size: 16)
     static let body1Medium: Font = .custom(InteropFont.medium.name, size: 16)
     static let body1SemiBold: Font = .custom(InteropFont.semiBold.name, size: 16)
+    
     static let body2Medium: Font = .custom(InteropFont.medium.name, size: 14)
     static let body2SemiBold: Font = .custom(InteropFont.semiBold.name, size: 14)
-    static let body2Bold: Font = .custom(InteropFont.bold.name, size: 24)
+    static let body2Bold: Font = .custom(InteropFont.bold.name, size: 14)
+    
+    static let body3Regular: Font = .custom(InteropFont.regular.name, size: 13)
     static let body3Medium: Font = .custom(InteropFont.medium.name, size: 13)
-    static let body3SemiBold: Font = .custom(InteropFont.semiBold.name, size: 18)
+    static let body3SemiBold: Font = .custom(InteropFont.semiBold.name, size: 13)
+    static let body3Bold: Font = .custom(InteropFont.semiBold.name, size: 13)
+    
     static let caption1Medium: Font = .custom(InteropFont.medium.name, size: 12)
+    static let caption1SemiBold: Font = .custom(InteropFont.semiBold.name, size: 12)
 }
 
 enum InteropFont {

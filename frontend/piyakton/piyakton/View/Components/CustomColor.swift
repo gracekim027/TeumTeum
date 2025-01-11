@@ -9,6 +9,7 @@ import SwiftUI
 
 extension Color {
     static let whiteOpacity100: Color = .white.opacity(0.1)
+    static let whiteOpacity200: Color = .white.opacity(0.2)
     static let whiteOpacity500: Color = .white.opacity(0.5)
     static let whiteOpacity700: Color = .white.opacity(0.7)
     static let whiteOpacity800: Color = .white.opacity(0.8)
@@ -24,6 +25,8 @@ extension Color {
     static let gray800: Color = .init(red: 66 / 255, green: 66 / 255, blue: 68 / 255)
     static let gray900: Color = .init(red: 45 / 255, green: 45 / 255, blue: 46 / 255)
     static let gray950: Color = .init(white: 16 / 255)
+    
+    static let darkBackground: Color = .init(white: 18 / 255)
     
     static let red500: Color = .init(red: 235 / 255, green: 59 / 255, blue: 59 / 255)
     static let coral600: Color = .init(red: 245 / 255, green: 97 / 255, blue: 28 / 255)
