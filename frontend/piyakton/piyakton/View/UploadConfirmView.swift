@@ -32,7 +32,7 @@ struct UploadConfirmView: View {
                 }
             }
             
-            UploadedFileCell(file: .debug, state: .waiting, onDelete: {})
+            // UploadedFileCell
             
             Button {
                 isPresented = false

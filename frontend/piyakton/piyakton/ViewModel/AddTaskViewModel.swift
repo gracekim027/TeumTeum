@@ -10,12 +10,11 @@ import FirebaseFirestore
 
 @MainActor
 class AddTaskViewModel: ObservableObject {
-    @Published var isShowingTimeSelection = false
+    
     @Published var selectedTime: Int? = nil
     @Published var showConfirmation = false
     @Published var taskDescription = ""
     @Published var uploadedFiles: [UploadedFile] = []
-    @Published var isShowingFilePicker = false
     
     // Properties for task submission
     @Published var isLoading = false
@@ -74,10 +73,6 @@ class AddTaskViewModel: ObservableObject {
         uploadedFiles.removeAll { $0.id == file.id }
     }
     
-    func showFilePicker() {
-        isShowingFilePicker = true
-    }
-    
     @MainActor
     func submitTask() async {
         guard let unitTime = selectedTime else {
@@ -100,9 +95,10 @@ class AddTaskViewModel: ObservableObject {
             )
             
             self.createdTaskId = taskId
-            self.showConfirmation = true
+            withAnimation(.easeInOut) {
+                self.showConfirmation = true
+            }
             self.isLoading = false
-            
         } catch {
             self.error = error
             self.isLoading = false
