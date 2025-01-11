@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+
+import SwiftUI
 
 class TaskService {
     private let repository: TaskRepository
@@ -18,21 +21,30 @@ class TaskService {
     }
     
     func createTask(description: String, unitTime: Int, fileInfo: UploadedFile) async throws -> String {
-        // Upload the pdf/audio file to Firebase Storage and get the URL
-        let downloadURL = try await storageService.uploadFile(url: fileInfo.url, type: fileInfo.type)
-        
-        // Create new UploadedFile with Firebase Storage URL
-        let storedFile = UploadedFile(
-            id: fileInfo.id,
-            name: fileInfo.name,
-            type: fileInfo.type,
-            url: downloadURL
-        )
     
-        return try await repository.createTask(
-            description: description,
-            unitTime: unitTime,
-            fileInfo: storedFile
-        )
+        do {
+            guard let originalURL = fileInfo.getURL() else {
+                throw NSError(domain: "TaskService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            }
+            
+            let downloadURL = try await storageService.uploadFile(url: originalURL, type: fileInfo.type)
+            
+            // Create a new UploadedFile with the Firebase Storage URL
+            var storedFile = fileInfo
+            storedFile.url = downloadURL.absoluteString
+            
+            let taskId = try await repository.createTask(
+                description: description,
+                unitTime: unitTime,
+                fileInfo: storedFile
+            )
+            
+            return taskId
+            
+        } catch {
+            print("[TaskService] Error in createTask method:")
+            print("  Error: \(error.localizedDescription)")
+            throw error
+        }
     }
 }

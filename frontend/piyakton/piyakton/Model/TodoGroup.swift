@@ -26,8 +26,9 @@ struct TodoGroup: Identifiable, Codable {
 }
 
 extension TodoGroup {
-    static var debug1: Self = .init(id: "\(Int.random(in: 0...100))", description: "설명", unitTime: .long, completed: false, fileInfo: .debug, title: "철학개론", articleList: [.debug1])
-    static var debug2: Self = .init(id: "\(Int.random(in: 0...100))", description: "설명", unitTime: .long, completed: false, fileInfo: .debug, title: "철학개론", articleList: [.debug1, .debug2])
+    static var file = UploadedFile(name: "document", type: .pdf, url: "https")
+    static var debug1: Self = .init(id: "\(Int.random(in: 0...100))", description: "설명", unitTime: .long, completed: false, fileInfo: file, title: "철학개론", articleList: [.debug1])
+    static var debug2: Self = .init(id: "\(Int.random(in: 0...100))", description: "설명", unitTime: .long, completed: false, fileInfo: file,title: "철학개론", articleList: [.debug1, .debug2])
 }
 
 enum RequiredTime: Int, Codable {
