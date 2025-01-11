@@ -27,8 +27,12 @@ struct ArticleDetailView: View {
         self.remainingSec = todoGroup.unitTime.rawValue * 60
     }
     
+    @State private var showChatModal: Bool = false
+    @State private var chatMockup: [Chat] = [.debug1, .debug2, .debug3]
+    
     @State private var isPlaying: Bool = false
     @State private var onTap: Bool = false
+    
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
     @State private var currentTimer: Cancellable?
     @State private var remainingSec: Int
@@ -101,7 +105,7 @@ struct ArticleDetailView: View {
                         HStack {
                             Spacer()
                             Button {
-                                // start chatting
+                                showChatModal = true
                             } label: {
                                 HStack(spacing: 4) {
                                     Image("eyes")
@@ -138,6 +142,11 @@ struct ArticleDetailView: View {
                         currentTimer?.cancel()
                     }
                 }
+            }
+            .sheet(isPresented: $showChatModal) {
+                ChatView(chatList: $chatMockup)
+                    .presentationDetents([.height(1000)])
+                    .presentationDragIndicator(.visible)
             }
         }
     }
