@@ -15,7 +15,7 @@ class AddTaskViewModel: ObservableObject {
     @Published var isShowingFilePicker = false
         
     init() {
-            loadSampleFiles()
+            //loadSampleFiles()
         }
     
     func loadSampleFiles() {

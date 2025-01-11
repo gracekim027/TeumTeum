@@ -12,29 +12,47 @@ struct UploadedFileCell: View {
     
     var body: some View {
         VStack(alignment: .trailing) {
-            HStack {
-                            if file.type == .mp3 {
-                                Image("audio_icon") // Use your asset name
-                                    .resizable()
-                                    .frame(width: 24, height: 24) // Adjust size as needed
-                                    .padding(4) // Optional padding
-                            } else if file.type == .pdf {
-                                Image("pdf_icon") // Use your asset name for PDFs
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .padding(4)
-                            }
-                            
-                            Spacer() // Push the rest to the right
-                        }
+            // Icon and Title in VStack with Leading Alignment
+            VStack(alignment: .leading, spacing: 2) {
+                if file.type == .mp3 {
+                    Image("audio_icon")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .padding(4)
+                } else if file.type == .pdf {
+                    Image("pdf_icon")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .padding(4)
+                }
+                
+                Text(file.name)
+                    .font(.caption)
+                    .lineLimit(1) // Truncate if too long
+                    .foregroundColor(.primary)
+            }
+            .padding(0)
+            .frame(maxWidth: .infinity, alignment: .leading) // Align to the leading edge
             
             Spacer()
             
-            // Could show file name here
-            Text(file.name)
+            // Delete Button
+            HStack(alignment: .center, spacing: 10) {
+                Spacer() // Push button to the right
+                
+                Text("삭제")
+                    .font(Font.custom("Interop", size: 14).weight(.semibold))
+                    .foregroundColor(Color.Red500)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.WhiteOpacity700)
+            .cornerRadius(100)
         }
         .padding(12)
-        .frame(width: 154, height: 140, alignment: .trailing)
+        .frame(width: 154, height: 140, alignment: .trailing) 
+        .background(Color.WhiteOpacity800)
         .cornerRadius(12)
     }
 }
+
