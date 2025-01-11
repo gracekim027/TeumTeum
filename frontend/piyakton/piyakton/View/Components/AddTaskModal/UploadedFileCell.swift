@@ -4,55 +4,62 @@
 //
 //  Created by Grace Kim on 1/11/25.
 //
+
 import SwiftUI
 
 struct UploadedFileCell: View {
-    let file: UploadedFile  // Using your specific model
-    let onDelete: () -> Void
+    
+    let file: UploadedFile
+    let state: FileState
+    var onDelete: () -> Void = {}
     
     var body: some View {
-        VStack(alignment: .trailing) {
-            // Icon and Title in VStack with Leading Alignment
+        VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 2) {
-                if file.type == .mp3 {
-                    Image("audio_icon")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .padding(4)
-                } else if file.type == .pdf {
-                    Image("pdf_icon")
-                        .resizable()
-                        .frame(width: 24, height: 24)
-                        .padding(4)
+                Group {
+                    if file.type == .mp3 {
+                        Image("audio_icon")
+                            .resizable()
+                    } else if file.type == .pdf {
+                        Image("pdf_icon")
+                            .resizable()
+                    }
                 }
+                .frame(width: 24, height: 24)
                 
                 Text(file.name)
-                    .font(.caption)
-                    .lineLimit(1) // Truncate if too long
+                    .font(.body2Medium)
+                    .lineLimit(1)
                     .foregroundColor(.primary)
+                
+                if let detail = file.detail {
+                    Text(file.name)
+                        .font(.caption1Medium)
+                        .foregroundStyle(Color.gray500)
+                }
             }
-            .padding(0)
-            .frame(maxWidth: .infinity, alignment: .leading) // Align to the leading edge
             
             Spacer()
             
-            // Delete Button
-            HStack(alignment: .center, spacing: 10) {
-                Spacer() // Push button to the right
+            HStack {
+                Spacer()
                 
-                Text("삭제")
-                    .font(Font.custom("Interop", size: 14).weight(.semibold))
-                    .foregroundColor(Color.Red500)
+                Text(state == .uploading ? "삭제" : "대기중")
+                    .font(.body2SemiBold)
+                    .foregroundStyle(state == .uploading ? Color.red500 : Color.gray700)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color.whiteOpacity700)
+                    .clipShape(RoundedRectangle(cornerRadius: 100))
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(Color.WhiteOpacity700)
-            .cornerRadius(100)
         }
         .padding(12)
         .frame(width: 154, height: 140, alignment: .trailing) 
-        .background(Color.WhiteOpacity800)
+        .background(Color.whiteOpacity800)
         .cornerRadius(12)
     }
 }
 
+#Preview {
+    UploadedFileCell(file: .init(name: "한국현대사의 이해", type: .pdf, url: URL(string: "hello")!), state: .uploading, onDelete: {})
+}

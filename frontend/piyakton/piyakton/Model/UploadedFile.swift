@@ -8,13 +8,25 @@
 import SwiftUI
 
 struct UploadedFile: Identifiable {
-    let id = UUID()
+    var id = UUID()
     let name: String
+    var detail: String? = nil
     let type: FileType
     let url: URL
+}
+
+extension UploadedFile {
+    static var debug: Self = .init(name: "한국현대사의 이해",
+                                   type: .pdf,
+                                   url: URL(string: "example")!)
 }
 
 enum FileType {
     case pdf
     case mp3
+}
+
+enum FileState {
+    case uploading
+    case waiting
 }
