@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		65FE153C2D32827900C064B5 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 65FE153B2D32827900C064B5 /* FirebaseAuth */; };
+		65FE153E2D32827900C064B5 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 65FE153D2D32827900C064B5 /* FirebaseDatabase */; };
+		65FE15402D32827900C064B5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 65FE153F2D32827900C064B5 /* FirebaseFirestore */; };
+		65FE15422D32827900C064B5 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 65FE15412D32827900C064B5 /* FirebaseFunctions */; };
+		65FE15442D32827900C064B5 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 65FE15432D32827900C064B5 /* FirebaseStorage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		65CB9CE42D3215CC008803BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +73,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65FE153E2D32827900C064B5 /* FirebaseDatabase in Frameworks */,
+				65FE153C2D32827900C064B5 /* FirebaseAuth in Frameworks */,
+				65FE15402D32827900C064B5 /* FirebaseFirestore in Frameworks */,
+				65FE15442D32827900C064B5 /* FirebaseStorage in Frameworks */,
+				65FE15422D32827900C064B5 /* FirebaseFunctions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +138,11 @@
 			);
 			name = piyakton;
 			packageProductDependencies = (
+				65FE153B2D32827900C064B5 /* FirebaseAuth */,
+				65FE153D2D32827900C064B5 /* FirebaseDatabase */,
+				65FE153F2D32827900C064B5 /* FirebaseFirestore */,
+				65FE15412D32827900C064B5 /* FirebaseFunctions */,
+				65FE15432D32827900C064B5 /* FirebaseStorage */,
 			);
 			productName = piyakton;
 			productReference = 65CB9CD32D3215CA008803BF /* piyakton.app */;
@@ -208,6 +226,9 @@
 			);
 			mainGroup = 65CB9CCA2D3215CA008803BF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				65FE153A2D32827900C064B5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 65CB9CD42D3215CA008803BF /* Products */;
 			projectDirPath = "";
@@ -583,6 +604,45 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		65FE153A2D32827900C064B5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		65FE153B2D32827900C064B5 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65FE153A2D32827900C064B5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		65FE153D2D32827900C064B5 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65FE153A2D32827900C064B5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		65FE153F2D32827900C064B5 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65FE153A2D32827900C064B5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		65FE15412D32827900C064B5 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65FE153A2D32827900C064B5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+		65FE15432D32827900C064B5 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 65FE153A2D32827900C064B5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 65CB9CCB2D3215CA008803BF /* Project object */;
 }
