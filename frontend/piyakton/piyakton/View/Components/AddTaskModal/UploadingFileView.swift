@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UploadingFileView: View {
     
-    let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible())]
+    private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible())]
     
     @State private var taskList: [UploadedFile] = []
     @State private var taskDescription: String = ""
