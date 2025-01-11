@@ -18,7 +18,7 @@ struct piyaktonApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainTabView(viewModel: .init(container: container))
         }
     }
 }

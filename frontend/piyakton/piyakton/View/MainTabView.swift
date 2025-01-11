@@ -1,5 +1,5 @@
 //
-//  MainView.swift
+//  MainTabView.swift
 //  piyakton
 //
 //  Created by Grace Kim on 1/11/25.
@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-struct MainView: View {
+struct MainTabView: View {
+    
+    @ObservedObject var viewModel: MainViewModel
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -17,8 +20,4 @@ struct MainView: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    MainView()
 }

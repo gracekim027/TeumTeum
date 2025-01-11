@@ -7,6 +7,6 @@
 
 import Foundation
 
-final class MainViewModel: ObservableObject {
+final class MainViewModel: ViewModel, ObservableObject {
     
 }
