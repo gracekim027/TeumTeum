@@ -27,7 +27,15 @@ class LLMWrapper:
         
         # Initialize OpenAI client
         self.openai_client = openai.OpenAI(api_key=self.openai_api_key)
-            
+        
+        # Initialize assistant
+        self.assistant = self.openai_client.beta.assistants.create(
+            name="PDF assistant",
+            instructions="An assistant to extract the contents of PDF files.", #TODO
+            model="gpt-4o",
+            tools=[{"type": "file_search"}],
+        )
+        
         # Initialize LangChain models
         self.models = {
             'gpt-4': self._init_openai_model("gpt-4-turbo-preview"),
@@ -57,6 +65,24 @@ class LLMWrapper:
             raise ValueError(f"Unknown model: {model_name}")
         return self.models[model_name]
     
+    def add_pdf(
+        self,
+        file_streams: List[Any]
+    ) :
+        # Upload files and add them to vector store
+        vector_store = self.openai_client.beta.vector_stores.create(name="PDF")
+        file_batch = self.openai_client.beta.vector_stores.file_batches.upload_and_poll(
+            vector_store_id=vector_store.id, files=file_streams
+        )
+        
+        # update pdf assistant to use vector store
+        self.assistant = self.openai_client.beta.assistants.update(
+            assistant_id=self.assistant.id,
+            tool_resources={"file_search": {"vector_store_ids": [vector_store.id]}},
+        )
+        
+        self.logger.info("PDF added")
+    
     async def get_completion(
         self,
         prompt: str,
@@ -69,12 +95,27 @@ class LLMWrapper:
             
             messages = []
             if system_prompt:
-                messages.append(SystemMessage(content=system_prompt))
-            messages.append(HumanMessage(content=prompt))
+                messages.append({"role": "system", "content": system_prompt})
+            messages.append({"role": "user", "content": prompt})
+            
             
             self.logger.info(f"Getting completion from {model_name}")
-            response = await model.ainvoke(messages)
-            return response.content
+            # create thread to execute
+            thread = self.openai_client.beta.threads.create(messages=messages)
+            run = self.openai_client.beta.threads.runs.create_and_poll(
+                thread_id=thread.id, assistant_id=self.assistant.id, timeout=1000
+            )
+            
+            if run.status != "completed":
+                raise Exception("Run failed:", run.status)
+
+            messages_cursor = self.openai_client.beta.threads.messages.list(thread_id=thread.id)
+            messages = [message for message in messages_cursor]
+
+            # Output text
+            res_txt = messages[0].content[0].text.value
+            return res_txt
+
             
         except Exception as e:
             self.logger.error(f"Error getting completion: {str(e)}")
@@ -84,9 +125,9 @@ class LLMWrapper:
         """Transcribe audio using OpenAI Whisper API directly."""
         try:
             self.logger.info("Transcribing audio")
-            transcript = await self.openai_client.audio.transcriptions.create(
+            transcript = self.openai_client.audio.transcriptions.create(
                 model="whisper-1",
-                file=audio_file
+                file=audio_file,
             )
             return transcript.text
         except Exception as e:

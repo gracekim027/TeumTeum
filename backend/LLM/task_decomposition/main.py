@@ -22,8 +22,8 @@ class TaskDecompositionSystem:
 
     async def process_content_from_file(
         self,
-        file_path: str,
-        file_type: str,
+        pdf_files: List[str],
+        audio_files: List[str],
         user_goal: str,
         unit_time: int,
         model: str = 'gpt-4'
@@ -41,31 +41,24 @@ class TaskDecompositionSystem:
         Returns:
             Dict containing summary and subtasks
         """
+        
         try:
-            # Load and process file
-            content = await self.file_manager.load_file(file_path)
+            pdf_raws = await self.file_manager.load_file(pdf_files)
+            audio_raws = await self.file_manager.load_file(audio_files)
             
-            # Process based on file type
-            if file_type == 'audio':
-                raw_content = await self.llm.transcribe_audio(content)
-            else:  # PDF/Text
-                # Get file processing prompt
-                process_messages = self.prompt_manager.load_prompt(
-                    'file_processing',
-                    file_type=file_type,
-                    content=content
-                )
-                raw_content = await self.llm.get_completion(
-                    process_messages[0]['content'],
-                    model_name=model
-                )
-
-            # Create summary
+            audio_contents = []
+            for audio_raw in audio_raws:
+                audio_content = await self.llm.transcribe_audio(audio_raw)
+                audio_contents.append(audio_content)
+            
+            self.llm.add_pdf(pdf_raws)
+            
             summary_messages = self.prompt_manager.load_prompt(
                 'summarization',
-                content=raw_content,
+                audio_contents=" ".join(audio_contents),
                 user_goal=user_goal
             )
+            
             summary = await self.llm.get_completion(
                 summary_messages[0]['content'],
                 model_name=model
@@ -81,10 +74,11 @@ class TaskDecompositionSystem:
                 time_messages[0]['content'],
                 model_name=model
             )
+            print(total_time_str.strip())
             total_time = int(total_time_str.strip())
 
             # Create subtasks
-            num_subtasks = total_time // unit_time
+            num_subtasks = (total_time + unit_time - 1) // unit_time
             task_messages = self.prompt_manager.load_prompt(
                 'task_decomposition',
                 summary=summary,
@@ -102,7 +96,7 @@ class TaskDecompositionSystem:
             subtasks = []
             for theme in subtask_themes:
                 content_messages = self.prompt_manager.load_prompt(
-                    'subtask_content',
+                    'subtask_context',
                     theme=theme,
                     summary=summary,
                     unit_time=unit_time,
@@ -148,13 +142,14 @@ async def main():
 
         # Example usage with a PDF file
         pdf_path = "sample/lecture.pdf"
+        audio_path = "sample/lecture.m4a"
         if Path(pdf_path).exists():
             logger.info("Processing PDF file...")
             result = await system.process_content_from_file(
-                file_path=pdf_path,
-                file_type='pdf',
+                pdf_files=[pdf_path],
+                audio_files=[audio_path],
                 user_goal="Understand the key concepts for the exam",
-                unit_time=5  # 5 minutes per subtask
+                unit_time=400  # 400 minutes per subtask
             )
             
             # Print results
@@ -169,28 +164,6 @@ async def main():
                 logger.info(f"Duration: {subtask['duration']} minutes")
                 logger.info(f"Content:\n{subtask['content']}")
 
-        # Example usage with an audio file
-        audio_path = "sample/lecture.mp3"
-        if Path(audio_path).exists():
-            logger.info("\nProcessing audio file...")
-            result = await system.process_content_from_file(
-                file_path=audio_path,
-                file_type='audio',
-                user_goal="Understand the lecture content",
-                unit_time=10  # 10 minutes per subtask
-            )
-            
-            # Print results
-            logger.info("\nProcessing Results:")
-            logger.info(f"Summary:\n{result['summary']}")
-            logger.info(f"\nTotal Time: {result['total_time']} minutes")
-            logger.info(f"Number of Subtasks: {result['num_subtasks']}")
-            
-            for i, subtask in enumerate(result['subtasks'], 1):
-                logger.info(f"\nSubtask {i}:")
-                logger.info(f"Theme: {subtask['theme']}")
-                logger.info(f"Duration: {subtask['duration']} minutes")
-                logger.info(f"Content:\n{subtask['content']}")
 
     except Exception as e:
         logger.error(f"Program failed: {str(e)}", exc_info=True)

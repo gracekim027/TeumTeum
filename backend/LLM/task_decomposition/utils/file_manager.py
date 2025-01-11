@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any, Union, BinaryIO
+from typing import Optional, List, Dict, Any, Union, BinaryIO
 from pathlib import Path
 import logging
 import mimetypes
@@ -123,21 +123,24 @@ class FileManager:
             self.logger.error(f"Error saving file {filename}: {str(e)}")
             raise FileProcessingError(f"Failed to save file: {str(e)}")
 
-    async def load_file(self, file_path: Union[str, Path]) -> bytes:
+    async def load_file(self, file_paths: List[Union[str, Path]]) -> bytes:
         """Load file content from path."""
-        try:
-            file_path = Path(file_path)
-            if not file_path.exists():
-                raise FileNotFoundError(f"File not found: {file_path}")
+        files = []
+        for file_path in file_paths:
+            try:
+                file_path = Path(file_path)
+                if not file_path.exists():
+                    raise FileNotFoundError(f"File not found: {file_path}")
+                    
+                raw_file = open(file_path, 'rb')
+                    
+                files.append(raw_file)
                 
-            with open(file_path, 'rb') as f:
-                content = f.read()
-                
-            return content
+            except Exception as e:
+                self.logger.error(f"Error loading file {file_path}: {str(e)}")
+                raise FileProcessingError(f"Failed to load file: {str(e)}")
             
-        except Exception as e:
-            self.logger.error(f"Error loading file {file_path}: {str(e)}")
-            raise FileProcessingError(f"Failed to load file: {str(e)}")
+        return files
 
     def cleanup_old_files(self, max_age_days: int = 7):
         """Clean up files older than specified days."""
