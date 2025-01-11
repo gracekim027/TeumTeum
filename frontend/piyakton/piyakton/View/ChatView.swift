@@ -25,12 +25,21 @@ struct ChatView: View {
                         }
                     }
                 }
+                .padding(.vertical, 32)
+                
                 MessageField(text: $currentMessage, placeholder: "궁금한 걸 자유롭게 입력해주세요") {
-                    // TODO: send chat message
+                    guard let lastChat = chatList.last else { return }
+                    if lastChat.received {
+                        let newChat = Chat(received: false, content: [currentMessage])
+                        chatList.append(newChat)
+                    } else {
+                        chatList[chatList.count - 1].appendChat(currentMessage)
+                    }
+                    currentMessage = ""
                 }
+                .padding(.bottom, 20)
             }
             .padding(.horizontal, 24)
-            .padding(.vertical, 32)
             .background(
                 Image("gradient").clipped()
             )
@@ -59,7 +68,7 @@ extension ChatView {
             } else {
                 Spacer()
             }
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: received ? .leading : .trailing, spacing: 6) {
                 ForEach(chat.content, id: \.self) { message in
                     textBox(received: received, message)
                 }

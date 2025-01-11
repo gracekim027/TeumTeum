@@ -9,7 +9,11 @@ import Foundation
 
 struct Chat: Hashable {
     let received: Bool
-    let content: [String]
+    var content: [String]
+    
+    mutating func appendChat(_ chat: String) {
+        content.append(chat)
+    }
 }
 
 extension Chat {
