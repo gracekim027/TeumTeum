@@ -20,7 +20,9 @@ struct piyaktonApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainView(viewModel: .init(container: container))
+            //MainView(viewModel: .init(container: container))
+            ArticleDetailView(todoGroup: .debug1, selected: 0)
+                .background(Color.darkBackground.ignoresSafeArea(.all))
         }
     }
 }

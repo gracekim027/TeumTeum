@@ -78,12 +78,13 @@ class TaskRepository {
     
     private func convertToArticleList(from array: [[String: Any]]) -> [Article]? {
         let articleList = array.map { dict in
-            Article(
+            let contentList = dict["content"] as! [Content]
+            return Article(
                 id: dict["id"] as? String ?? "",
                 title: dict["title"] as? String ?? "",
                 summary: dict["summary"] as? String ?? "",
                 order: dict["order"] as? Int ?? 0,
-                content: dict["content"] as? String ?? "",
+                content: contentList,
                 done: dict["done"] as? Bool ?? false
             )
         }
