@@ -36,7 +36,7 @@ class TaskRepository {
         return docRef.documentID
     }
     
-    func observeTask(taskId: String, completion: @escaping (MainTask?) -> Void) {
+    func observeTask(taskId: String, completion: @escaping (TodoGroup?) -> Void) {
         db.collection(userCollection)
             .document(user)
             .collection(taskCollection)
@@ -50,19 +50,19 @@ class TaskRepository {
                 }
                 
                 // Convert the dictionary data to your Task model
-                let task = MainTask(
+                let todo = TodoGroup(
                     id: taskId,
                     description: data["description"] as? String ?? "",
-                    unitTime: data["unitTime"] as? Int ?? 0,
-                    done: data["done"] as? Bool ?? false,
+                    unitTime: RequiredTime(rawValue: data["unitTime"] as? Int ?? 0) ?? .short,
+                    completed: data["done"] as? Bool ?? false,
                     fileInfo: self.convertToUploadedFile(from: data["fileInfo"] as? [String: Any] ?? [:]),
                     title: data["title"] as? String,
                     summary: data["summary"] as? String,
                     totalTime: data["totalTime"] as? Int,
-                    subtasks: self.convertToSubtasks(from: data["subtasks"] as? [[String: Any]] ?? [])
+                    articleList: self.convertToArticleList(from: data["subtasks"] as? [[String: Any]] ?? [])
                 )
                 
-                completion(task)
+                completion(todo)
             }
     }
     
@@ -76,9 +76,10 @@ class TaskRepository {
         return UploadedFile(id: fileId, name: fileName, type: fileType, url: url)
     }
     
-    private func convertToSubtasks(from array: [[String: Any]]) -> [Subtask]? {
-        let subtasks = array.map { dict in
-            Subtask(
+    private func convertToArticleList(from array: [[String: Any]]) -> [Article]? {
+        let articleList = array.map { dict in
+            Article(
+                id: dict["id"] as? String ?? "",
                 title: dict["title"] as? String ?? "",
                 summary: dict["summary"] as? String ?? "",
                 order: dict["order"] as? Int ?? 0,
@@ -86,6 +87,6 @@ class TaskRepository {
                 done: dict["done"] as? Bool ?? false
             )
         }
-        return subtasks.isEmpty ? nil : subtasks
+        return articleList.isEmpty ? nil : articleList
     }
 }

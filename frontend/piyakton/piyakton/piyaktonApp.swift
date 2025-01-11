@@ -6,16 +6,6 @@
 //
 
 import SwiftUI
-import FirebaseCore
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-
-    return true
-  }
-}
 
 @main
 struct piyaktonApp: App {
@@ -30,8 +20,16 @@ struct piyaktonApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView(viewModel: .init(container: container))
+            MainView(viewModel: .init(container: container))
         }
+    }
+}
+
+final class PathState: ObservableObject {
+    @Published var path: NavigationPath
+    
+    init() {
+        self.path = .init()
     }
 }
 

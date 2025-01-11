@@ -9,4 +9,6 @@ import Foundation
 
 final class MainViewModel: ViewModel, ObservableObject {
     
+    @Published var todoGroupList: [TodoGroup] = [.debug1, .debug2]
+    
 }
