@@ -36,6 +36,7 @@ struct MessageField: View {
                     .resizable()
                     .frame(width: 28, height: 28)
             }
+            .disabled(text.isEmpty)
         }
         .padding(.leading, 20)
         .padding(.trailing, 16)
