@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UploadingFileView: View {
     
+    let showFilePicker: () -> Void
     let finishUploading: () -> Void
     
     private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible())]
@@ -55,8 +56,7 @@ struct UploadingFileView: View {
                 
                 VStack(spacing: 16) {
                     Button {
-                        // viewModel.showFilePicker()
-                        taskList.append(.debug)
+                        showFilePicker()
                     } label: {
                         HStack(spacing: 8) {
                             Image("plus-circle")
@@ -125,6 +125,8 @@ struct UploadingFileView: View {
 
 #Preview {
     UploadingFileView() {
+        
+    } finishUploading: {
         
     }
 }

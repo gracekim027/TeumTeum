@@ -13,7 +13,7 @@ struct AddTaskModalView: View {
     @Binding var isPresented: Bool
     
     @State private var isEditing = false
-    @State private var showConfirmView: Bool = false
+    @State private var openFilePicker: Bool = false
     
     @FocusState private var isFocused: Bool
     
@@ -24,7 +24,7 @@ struct AddTaskModalView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing: 0) {
-                    if showConfirmView {
+                    if viewModel.showConfirmation {
                         UploadConfirmView(isPresented: $isPresented)
                             .background(.black)
                             .padding(.top, 80)
@@ -41,8 +41,10 @@ struct AddTaskModalView: View {
                             }
                     } else {
                         UploadingFileView() {
-                            withAnimation(.easeInOut) {
-                                showConfirmView = true
+                            openFilePicker = true
+                        } finishUploading: {
+                            Task {
+                                await viewModel.submitTask()
                             }
                         }
                         
@@ -70,7 +72,6 @@ struct AddTaskModalView: View {
                                     Button(action: {
                                         isFocused = false
                                         isEditing = false
-                                        viewModel.isShowingTimeSelection = true
                                     }) {
                                         HStack(spacing: 4) {
                                             Text("완료")
@@ -91,11 +92,10 @@ struct AddTaskModalView: View {
                     }
                 }
             }
-            .sheet(isPresented: $viewModel.isShowingFilePicker) {
-                DocumentPicker(types: [.pdf, .movie]) { urls in
-                    for url in urls {
-                        viewModel.addFile(url)
-                    }
+            .fileImporter(isPresented: $openFilePicker, allowedContentTypes: [.pdf, .movie], allowsMultipleSelection: true) { result in
+                guard let urlList = try? result.get() else { return }
+                for url in urlList {
+                    viewModel.addFile(url)
                 }
             }
             .animation(.default, value: isEditing)
