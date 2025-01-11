@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct AddTaskModalView: View {
+    
     @StateObject private var viewModel = AddTaskViewModel()
     @Binding var isPresented: Bool
+    
     @State private var isEditing = false
+    @State private var showConfirmView: Bool = false
+    
     @FocusState private var isFocused: Bool
     
     var body: some View {
@@ -20,7 +24,7 @@ struct AddTaskModalView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing: 0) {
-                    if viewModel.showConfirmation {
+                    if showConfirmView {
                         UploadConfirmView(isPresented: $isPresented)
                             .background(.black)
                             .padding(.top, 80)
@@ -36,7 +40,11 @@ struct AddTaskModalView: View {
                                 }
                             }
                     } else {
-                        UploadingFileView()
+                        UploadingFileView() {
+                            withAnimation(.easeInOut) {
+                                showConfirmView = true
+                            }
+                        }
                         
                         // Task Description Input
                         if isEditing {

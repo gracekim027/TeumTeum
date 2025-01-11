@@ -9,6 +9,8 @@ import SwiftUI
 
 struct UploadingFileView: View {
     
+    let finishUploading: () -> Void
+    
     private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible())]
     
     @State private var taskList: [UploadedFile] = []
@@ -93,7 +95,6 @@ struct UploadingFileView: View {
                     }
                     
                     MessageField(text: $taskDescription, placeholder: "배우고 싶은 목적은?") {
-                        // TODO: send
                         withAnimation(.easeInOut) {
                             showTimeSelectionPopup = true
                         }
@@ -112,7 +113,7 @@ struct UploadingFileView: View {
                 Color.black.opacity(0.7)
                     .ignoresSafeArea(.all)
                 TimeSelectionView(isPresented: $showTimeSelectionPopup, selectedTime: $selectedTime) {
-                    // TODO: after selection
+                    finishUploading()
                 }
             }
         }
@@ -123,7 +124,9 @@ struct UploadingFileView: View {
 }
 
 #Preview {
-    UploadingFileView()
+    UploadingFileView() {
+        
+    }
 }
 
 extension UploadingFileView {
