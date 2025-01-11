@@ -33,7 +33,7 @@ struct UploadedFileCell: View {
                     .foregroundColor(.primary)
                 
                 if let detail = file.detail {
-                    Text(file.name)
+                    Text(detail)
                         .font(.caption1Medium)
                         .foregroundStyle(Color.gray500)
                 }

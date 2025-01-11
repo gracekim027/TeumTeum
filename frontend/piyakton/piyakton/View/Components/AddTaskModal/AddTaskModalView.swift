@@ -36,73 +36,7 @@ struct AddTaskModalView: View {
                                 }
                             }
                     } else {
-                        Text("틈새 시간에 읽고 싶은\n자료를 올려주세요")
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(Color.gray50)
-                            .padding(.top, 20)
-                            .padding(.bottom, 30)
-                        
-                        if !viewModel.uploadedFiles.isEmpty {
-                            // 업로드된 파일이 있다면 보여줌
-                            HStack(alignment: .top, spacing: 12) {
-                                VStack(spacing: 12) {
-                                    ForEach(viewModel.uploadedFiles.enumerated().compactMap { $0.offset % 2 == 0 ? $0.element : nil }, id: \.id) { file in
-                                        UploadedFileCell(file: file, state: .waiting, onDelete: {
-                                            viewModel.removeFile(file)
-                                        })
-                                    }
-                                }
-                                VStack(spacing: 12) {
-                                    ForEach(viewModel.uploadedFiles.enumerated().compactMap { $0.offset % 2 != 0 ? $0.element : nil }, id: \.id) { file in
-                                        UploadedFileCell(file: file, state: .uploading, onDelete: {
-                                            viewModel.removeFile(file)
-                                        })
-                                    }
-                                }
-                            }
-                            .padding(.horizontal, 17)
-                            .padding(.vertical, 16)
-                            .frame(width: 354, height: 420, alignment: .topLeading)
-                            .background(Color.whiteOpacity100)
-                            .cornerRadius(16)
-                        } else {
-                            VStack(spacing: 10) {
-                                Text("⏰")
-                                    .font(.system(size: 20))
-                                    .foregroundColor(Color.gray400)
-                                Text("잠깐의 틈도 채워질 수 있습니다.")
-                                    .foregroundColor(.gray)
-                            }
-                            .frame(width: 354, height: 420, alignment: .center)
-                            .background(Color.whiteOpacity100)
-                            .cornerRadius(16)
-                            .padding(.horizontal, 17)
-                            .padding(.vertical, 16)
-                        }
-                        
-                        Spacer()
-                        
-                        Button(action: {
-                            viewModel.showFilePicker()
-                        }) {
-                            HStack {
-                                Image(systemName: "plus.circle.fill")
-                                VStack(alignment: .leading) {
-                                    Text("파일 업로드")
-                                        .bold()
-                                    Text("PDF, MP4")
-                                        .font(.caption)
-                                }
-                                Spacer()
-                                Text("최대 512mb")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
-                            .padding()
-                            .background(Color(.systemBackground))
-                            .cornerRadius(10)
-                        }
-                        .padding(.horizontal)
+                        UploadingFileView()
                         
                         // Task Description Input
                         if isEditing {
@@ -145,28 +79,11 @@ struct AddTaskModalView: View {
                                 .padding(.vertical, 8)
                                 .background(Color(.systemBackground))
                             }
-                        } else {
-                            Button(action: {
-                                isEditing = true
-                                isFocused = true
-                            }) {
-                                HStack {
-                                    Text(viewModel.taskDescription.isEmpty ? "배우고 싶은 목적은?" : viewModel.taskDescription)
-                                        .foregroundColor(viewModel.taskDescription.isEmpty ? .gray : .primary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.gray)
-                                }
-                                .padding()
-                                .background(Color(.systemGray6))
-                                .cornerRadius(10)
-                            }
-                            .padding()
                         }
                     }
                 }
                 .onAppear {
-                    viewModel.showConfirmation = true
+                    //viewModel.showConfirmation = true
                 }
                 
                 if viewModel.isShowingTimeSelection {

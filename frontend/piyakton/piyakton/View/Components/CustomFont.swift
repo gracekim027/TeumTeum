@@ -10,6 +10,8 @@ import SwiftUI
 extension Font {
     static let header1Bold: Font = .custom(InteropFont.bold.name, size: 28)
     static let header2Bold: Font = .custom(InteropFont.bold.name, size: 24)
+    static let title2Bold: Font = .custom(InteropFont.bold.name, size: 20)
+    static let title3SemiBold: Font = .custom(InteropFont.semiBold.name, size: 18)
     static let body1Regular: Font = .custom(InteropFont.regular.name, size: 16)
     static let body1Medium: Font = .custom(InteropFont.medium.name, size: 16)
     static let body1SemiBold: Font = .custom(InteropFont.semiBold.name, size: 16)
