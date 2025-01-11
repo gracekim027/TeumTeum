@@ -17,36 +17,30 @@ SUMMARY REQUIREMENTS:
 1. Structure and Hierarchy:
    - Organize content in a clear hierarchical structure
    - Identify main topics and their dependent subtopics
-   - Mark sequential dependencies (concepts that must be learned in order)
+   - Mark sequential dependencies
 
 2. Knowledge Components:
    - Highlight key concepts, definitions, and terminology
    - Identify practical examples and applications
    - Note any formulas, frameworks, or methodologies
 
-3. Learning Progression:
-   - Flag prerequisite knowledge
-   - Indicate complexity levels of different sections
-   - Mark natural breaking points between concepts
-
-4. Goal Alignment:
+3. Goal Alignment:
    - Emphasize content most relevant to the user's learning goal
    - Note practical applications related to the goal
    - Identify which sections directly support the learning objective
 
-FORMAT YOUR RESPONSE AS:
+OUTPUT FORMAT:
+You must return your response in EXACTLY this format with these exact keys:
+title: [Overall title of the content]
+summary: [Comprehensive summary including key concepts, dependencies, and goal alignment]
 
-CORE CONCEPTS:
-[List the fundamental ideas and concepts, organized hierarchically]
+Example format:
+title: Understanding Computer Architecture Fundamentals
+summary: This material covers the fundamental concepts of computer architecture, focusing on CPU operations and memory hierarchy. Key concepts include instruction execution cycles, memory management, and data flow. The content progresses from basic CPU components to advanced processing concepts, with practical applications in system optimization. For the goal of mastering computer architecture basics, special attention is given to the relationship between theoretical concepts and real-world performance considerations.
 
-DETAILED BREAKDOWN:
-[Comprehensive summary with clear section breaks and progression]
-
-LEARNING DEPENDENCIES:
-[Map showing which concepts depend on understanding of others]
-
-GOAL-SPECIFIC HIGHLIGHTS:
-[Elements particularly relevant to the user's stated learning goal]
-
-Remember: Your summary should be detailed enough to support breaking this content into 5-20 minute learning segments while maintaining logical coherence.
+Remember: 
+- Your summary should be detailed enough to support breaking content into 5-20 minute segments
+- Include all important dependencies and relationships between concepts
+- Maintain focus on the learning goal
+- No additional formatting or sections beyond title/summary
 """

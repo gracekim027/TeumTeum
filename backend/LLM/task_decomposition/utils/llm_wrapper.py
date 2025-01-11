@@ -12,7 +12,6 @@ from langchain_core.language_models import BaseChatModel
 
 class LLMWrapper:
     def __init__(self):
-        """Initialize LLM wrapper with environment variables."""
         load_dotenv()
         
         # Setup logging
@@ -77,8 +76,7 @@ class LLMWrapper:
     
     def add_pdf(
     self,
-    file_streams: List[Any]
-) -> None:
+    file_streams: List[Any]) -> None:
         """Upload PDF files and add them to vector store."""
         try:
             # Upload files and add them to vector store
@@ -98,16 +96,12 @@ class LLMWrapper:
             self.logger.error(f"Error adding PDF: {str(e)}")
             raise
     
-    async def get_completion(
+    async def get_openai_completion(
     self,
     prompt: str,
-    model_name: str = 'gpt-4o',
-    system_prompt: Optional[str] = None
-) -> str:
+    system_prompt: Optional[str] = None) -> str:
         """Get completion from specified model."""
         try:
-            model = self.get_model(model_name)
-            
             # For threads API, we'll combine system prompt and user prompt
             thread_messages = []
             if system_prompt:
@@ -117,7 +111,6 @@ class LLMWrapper:
                 
             thread_messages.append({"role": "user", "content": combined_prompt})
             
-            self.logger.info(f"Getting completion from {model_name}")
             # create thread to execute
             thread = self.openai_client.beta.threads.create(messages=thread_messages)
             run = self.openai_client.beta.threads.runs.create_and_poll(
@@ -133,6 +126,29 @@ class LLMWrapper:
             # Output text
             res_txt = messages[0].content[0].text.value
             return res_txt
+            
+        except Exception as e:
+            self.logger.error(f"Error getting completion: {str(e)}")
+            raise
+    
+    async def get_llm_completion(
+        self,
+        prompt: str,
+        model_name: str = 'claude',
+        system_prompt: Optional[str] = None
+    ) -> str:
+        """Get completion from specified model."""
+        try:
+            model = self.get_model(model_name)
+            
+            messages = []
+            if system_prompt:
+                messages.append(SystemMessage(content=system_prompt))
+            messages.append(HumanMessage(content=prompt))
+            
+            self.logger.info(f"Getting completion from {model_name}")
+            response = await model.ainvoke(messages)
+            return response.content
             
         except Exception as e:
             self.logger.error(f"Error getting completion: {str(e)}")

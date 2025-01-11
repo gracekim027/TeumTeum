@@ -19,25 +19,6 @@ ENVIRONMENT CONSTRAINTS:
 - Limited attention spans (2-3 minute focus periods)
 - Need for easy re-entry points after interruptions
 
-TIME-BASED CONTENT GUIDELINES:
-{% if unit_time <= 5 %}
-- 2-3개의 핵심 내용을 간단한 문장으로
-- 일상적인 예시 하나
-- 짧은 요약
-{% elif unit_time <= 10 %}
-- 3-4개의 주요 개념을 자연스러운 설명으로
-- 실생활 예시
-- 간단한 복습 포인트
-{% elif unit_time <= 15 %}
-- 4-5개의 개념을 연결된 설명으로
-- 구체적인 예시들
-- 이해도 확인을 위한 간단한 질문
-{% else %}
-- 상세 개념 설명 (끊어 읽기 좋게 구성)
-- 다양한 예시
-- 핵심 복습 포인트
-{% endif %}
-
 CONTENT REQUIREMENTS:
 - Clear, conversational Korean language
 - Natural flow between concepts
@@ -45,24 +26,27 @@ CONTENT REQUIREMENTS:
 - Easy to understand when listened to
 - No complex terminology without explanation
 - Must fit exactly within {{ unit_time }} minutes
-- Short, complete sentences
-- Natural transitions between ideas
+- Use markdown format with ### for section headers
+- Natural paragraph flow under each section
 
-OUTPUT STRUCTURE:
-학습 시간: {{ unit_time }}분
+OUTPUT FORMAT:
+You must return your response in EXACTLY this format:
 
-주요 내용:
-[자연스러운 설명문]
+title: [한글 제목]
+summary: [한글 요약 - 1-2문장]
+content: |
+  ### 소제목 1
+  [소제목 1 문단 혹은 문단들]
 
-예시:
-[실생활 관련 예시]
-
-정리:
-[핵심 요약]
+  ### 소제목 2
+  [소제목 2 문단 혹은 문단들]
+  
+  ### 소제목 3
+  [소제목 3 문단 혹은 문단들]
 
 Remember: 
 - Write in natural, conversational Korean
 - Content should flow well when read aloud
-- Each section should transition smoothly to the next
-- Keep the content precisely fitted to the time limit
+- Keep content length appropriate for {{ unit_time }} minute reading/listening
+- No additional formatting or sections beyond title/summary/content
 """

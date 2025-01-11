@@ -33,10 +33,17 @@ CALCULATION RULES:
 - If content seems too complex for transit learning, cap at 30 minutes and flag for simplification
 
 OUTPUT INSTRUCTIONS:
-Return only a single number representing the total estimated minutes. The number must be:
+Return your answer in EXACTLY this format:
+estimation_time: [number]
+
+Return ONLY a single number representing the total estimated minutes.
 - Less than or equal to 60
 - Divisible by the unit_time
 - Realistic for transit-based learning
+- A plain integer with no text, symbols, or explanations
 
-Example outputs: 15, 20, 30, 45, 60
+Example valid outputs:
+estimation_time: 15
+estimation_time: 30
+estimation_time: 60
 """

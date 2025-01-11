@@ -1,0 +1,146 @@
+{
+  "input_parameters": {
+    "pdf_files": [
+      "hashing_pdf.pdf"
+    ],
+    "audio_files": [],
+    "user_goal": "어제 교수님이 수업시간에 다룬 것에 대한 간단한 복습. 차후 과제에 대비하기 위한 용.",
+    "unit_time": 5
+  },
+  "result": {
+    "title": "Hashing Techniques and Applications",
+    "summary": "This material explores the concept of hashing within the context of data structures and algorithms. It focuses on the implementation of efficient search and dynamic operations using hash tables. Key concepts include comparison models, decision trees, and the need for super-constant branching factors to improve search times beyond the limits of comparison-based algorithms. The lecture introduces the direct access array and discusses its limitations in terms of space. Hashing is presented as a solution, where keys are mapped to a smaller range using hash functions to form a hash table, addressing space inefficiencies. The document details collision handling methods such as open addressing and chaining. Additionally, it emphasizes the importance of selecting effective hash functions to reduce chain lengths by introducing universal hashing techniques that expect O(1) time complexity for operations. Practical examples include Python's hashing applications and considerations for dynamic operations within hash tables. This lecture is particularly relevant for reviewing algorithm efficiency and applications in building robust, scalable system architectures, aligning directly with the goal to understand foundational algorithmic strategies discussed during the class【4:0†hashing_pdf.pdf】.",
+    "total_time": 45,
+    "unit_time": 5,
+    "num_subtasks": 21,
+    "user_goal": "어제 교수님이 수업시간에 다룬 것에 대한 간단한 복습. 차후 과제에 대비하기 위한 용.",
+    "subtasks": [
+      {
+        "order": 1,
+        "title": "해시 테이블의 기본 개념과 구현 원리",
+        "summary": "해시 테이블은 효율적인 데이터 검색을 위한 핵심 자료구조입니다. 직접 접근 배열의 한계를 극복하고 공간 효율성을 높이기 위해 해시 함수를 활용하는 방법을 알아봅니다.",
+        "content": "|"
+      },
+      {
+        "order": 2,
+        "title": "비교 기반 검색의 한계와 해싱의 필요성",
+        "summary": "비교 모델의 기본적인 검색 한계를 살펴보고, 이를 극복하기 위한 해싱의 도입 배경을 이해합니다. 5분 동안 핵심 개념을 쉽게 복습할 수 있도록 구성했습니다.",
+        "content": "|"
+      },
+      {
+        "order": 3,
+        "title": "Direct Access Array의 장단점 이해하기",
+        "summary": "검색 효율을 높이기 위한 Direct Access Array의 특성과 실제 활용시 고려해야 할 제한사항을 알아봅니다. 이를 통해 해시 테이블의 필요성을 이해할 수 있습니다.",
+        "content": "|"
+      },
+      {
+        "order": 4,
+        "title": "해시 함수의 기초와 키 매핑 이해하기",
+        "summary": "해시 테이블의 핵심 개념인 해시 함수와 키 매핑에 대해 알아봅니다. 효율적인 검색을 위한 해시 테이블의 기본 구조와 작동 원리를 쉽게 설명합니다.",
+        "content": "|"
+      },
+      {
+        "order": 5,
+        "title": "해시 테이블의 기본 구조와 동작 이해하기",
+        "summary": "해시 테이블의 핵심 개념과 기본 동작 방식을 살펴봅니다. 직접 접근 배열의 한계를 극복하고 효율적인 검색을 가능하게 하는 해시 테이블의 구조를 이해합니다.",
+        "content": "|"
+      },
+      {
+        "order": 6,
+        "title": "체이닝 방식으로 해시 충돌 해결하기",
+        "summary": "해시 테이블에서 발생하는 충돌을 체이닝 방식으로 해결하는 방법을 알아봅니다. 링크드 리스트를 활용한 체이닝의 기본 개념과 장단점을 이해할 수 있습니다.",
+        "content": "|"
+      },
+      {
+        "order": 7,
+        "title": "오픈 어드레싱: 해시 충돌 해결의 핵심 이해하기",
+        "summary": "해시 테이블에서 발생하는 충돌을 해결하는 방법 중 하나인 오픈 어드레싱에 대해 알아봅니다. 특히 선형 탐사와 이차 탐사를 중심으로 실제 구현 방법을 이해합니다.",
+        "content": "|"
+      },
+      {
+        "order": 8,
+        "title": "유니버설 해싱: 더 똑똑한 해시 테이블 만들기",
+        "summary": "해시 테이블의 성능을 최적화하기 위한 유니버설 해싱의 개념과 장점을 살펴봅니다. 일반 해싱의 한계를 극복하고 더 효율적인 검색을 가능하게 하는 방법을 이해합니다.",
+        "content": "|"
+      },
+      {
+        "order": 9,
+        "title": "파이썬 딕셔너리의 내부 동작 원리",
+        "summary": "파이썬 딕셔너리가 어떻게 해시 테이블을 활용하여 효율적인 데이터 저장과 검색을 구현하는지 알아봅니다. 5분 동안 핵심 개념을 쉽게 이해할 수 있도록 설명합니다.",
+        "content": "|"
+      },
+      {
+        "order": 10,
+        "title": "해시 테이블의 동적 연산 이해하기",
+        "summary": "해시 테이블을 활용한 효율적인 검색과 동적 연산에 대해 알아봅니다. 직접 접근 배열의 한계를 극복하고 실용적인 메모리 사용을 위한 해싱의 핵심 개념을 설명합니다.",
+        "content": "|"
+      },
+      {
+        "order": 11,
+        "title": "해싱의 기본 개념과 활용",
+        "summary": "해싱은 데이터를 빠르게 저장하고 검색하기 위한 핵심 기술입니다. 직접 접근 배열의 한계를 극복하고 효율적인 데이터 관리를 가능하게 하는 방법을 살펴봅니다.",
+        "content": "|"
+      },
+      {
+        "order": 12,
+        "title": "해싱의 기초와 해시 테이블의 이해",
+        "summary": "데이터를 효율적으로 저장하고 검색하기 위한 해싱의 핵심 개념과 구현 방법을 알아봅니다. 해시 테이블의 작동 원리와 충돌 해결 방법을 쉽게 설명합니다.",
+        "content": "|"
+      },
+      {
+        "order": 13,
+        "title": "해시 테이블의 기본 개념과 원리",
+        "summary": "해시 테이블은 효율적인 데이터 검색을 위한 핵심 자료구조입니다. 직접 접근 배열의 한계를 극복하고 공간을 절약하면서도 빠른 검색이 가능한 방법을 알아봅니다.",
+        "content": "|"
+      },
+      {
+        "order": 14,
+        "title": "해싱의 기본 개념과 활용",
+        "summary": "데이터를 빠르게 검색하고 저장하기 위한 해싱의 핵심 개념을 살펴봅니다. 해시 테이블의 구조와 충돌 해결 방법을 이해하고, 실제 응용 사례를 알아봅니다.",
+        "content": "|"
+      },
+      {
+        "order": 15,
+        "title": "해싱의 기본 개념과 활용",
+        "summary": "해싱은 데이터를 빠르게 저장하고 검색하기 위한 핵심 기술입니다. 직접 접근 배열의 한계를 극복하고 효율적인 데이터 관리를 가능하게 하는 방법을 살펴봅니다.",
+        "content": "|"
+      },
+      {
+        "order": 16,
+        "title": "해싱의 기본 개념과 활용",
+        "summary": "해싱은 데이터를 빠르게 검색하고 저장하기 위한 핵심 기술입니다. 직접 접근 배열의 한계를 극복하고 효율적인 데이터 관리를 가능하게 하는 방법을 알아봅시다.",
+        "content": "|"
+      },
+      {
+        "order": 17,
+        "title": "해싱(Hashing)의 기본 개념과 구현 이해하기",
+        "summary": "해싱은 효율적인 데이터 검색을 위한 핵심 기술입니다. 직접 접근 배열의 한계를 극복하고 공간 효율성을 높이는 방법을 알아봅니다.",
+        "content": "|"
+      },
+      {
+        "order": 18,
+        "title": "해싱(Hashing)의 기본 개념과 활용",
+        "summary": "데이터를 빠르게 검색하고 저장하기 위한 해싱의 핵심 개념을 설명합니다. 해시 테이블의 구현 방식과 충돌 해결 방법을 이해하기 쉽게 정리했습니다.",
+        "content": "|"
+      },
+      {
+        "order": 19,
+        "title": "해싱의 기본 개념과 핵심 원리",
+        "summary": "해싱은 데이터를 빠르게 저장하고 검색하기 위한 핵심 기술입니다. 직접 접근 배열의 한계를 극복하고 효율적인 데이터 관리를 가능하게 하는 방법을 살펴봅니다.",
+        "content": "|"
+      },
+      {
+        "order": 20,
+        "title": "해싱(Hashing)의 기본 개념과 활용",
+        "summary": "데이터를 빠르게 검색하고 저장하기 위한 해싱의 핵심 개념을 설명합니다. 해시 테이블의 작동 방식과 충돌 해결 방법을 쉽게 이해할 수 있도록 정리했습니다.",
+        "content": "|"
+      },
+      {
+        "order": 21,
+        "title": "해싱의 기본 개념과 필요성 이해하기",
+        "summary": "해싱이 왜 필요하고 어떤 장점이 있는지 알아봅니다. 데이터 검색 속도 향상을 위한 해싱의 기본 원리를 설명합니다.",
+        "content": "|"
+      }
+    ]
+  }
+}
