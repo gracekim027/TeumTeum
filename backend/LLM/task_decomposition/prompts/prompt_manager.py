@@ -40,11 +40,30 @@ class PromptManager:
             raise
 
 
+# 프롬프트 형태를 테스트 해볼 수 있음 
 if __name__ == "__main__":
-    prompt_manager = PromptManager()
+    import logging
 
-    summary_messages = prompt_manager.load_prompt(
-        'summarization',
-        content="A Pdf on system architcture",
-        user_goal="Understanding basic concepts"
-    )
+    # Set up logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+    try:
+        # Initialize prompt manager
+        prompt_manager = PromptManager()
+
+        # Test summarization prompt
+        summary_messages = prompt_manager.load_prompt(
+            'summarization',
+            content="A PDF on system architecture that covers fundamental concepts including distributed systems, microservices, and scalability patterns. The document includes detailed explanations of various architectural styles and their trade-offs.",
+            user_goal="Understand core system architecture concepts for software design"
+        )
+
+        # Print the generated prompt
+        print("\nGenerated Prompt Messages:")
+        for message in summary_messages:
+            print(f"\nRole: {message['role']}")
+            print(f"Content:\n{message['content']}")
+
+    except Exception as e:
+        logger.error(f"Error occurred: {str(e)}")

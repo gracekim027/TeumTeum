@@ -1,102 +1,179 @@
-from typing import Optional, Dict, Any, List
-from openai import OpenAI
-from anthropic import Anthropic
-import asyncio
-from functools import wraps
-import time
+from typing import Optional, Dict, Any, List, Union
+import logging
+from pathlib import Path
+from dotenv import load_dotenv
+import os
+import openai
+
+from langchain_anthropic import ChatAnthropic
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.language_models import BaseChatModel
 
 class LLMWrapper:
-    def __init__(self, openai_api_key: str, anthropic_api_key: str):
-        self.openai_client = OpenAI(api_key=openai_api_key)
-        self.anthropic_client = Anthropic(api_key=anthropic_api_key)
+    def __init__(self):
+        """Initialize LLM wrapper with environment variables."""
+        load_dotenv()
         
-    async def retry_with_exponential_backoff(
+        # Setup logging
+        self.logger = logging.getLogger(__name__)
+        
+        # Get API keys
+        self.openai_api_key = os.getenv("OPENAI_API_KEY")
+        self.anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
+        
+        if not self.openai_api_key or not self.anthropic_api_key:
+            raise ValueError("Missing required API keys")
+        
+        # Initialize OpenAI client
+        self.openai_client = openai.OpenAI(api_key=self.openai_api_key)
+            
+        # Initialize LangChain models
+        self.models = {
+            'gpt-4': self._init_openai_model("gpt-4-turbo-preview"),
+            'gpt-3.5': self._init_openai_model("gpt-3.5-turbo"),
+            'claude': self._init_claude_model()
+        }
+        
+    def _init_openai_model(self, model_name: str) -> ChatOpenAI:
+        """Initialize OpenAI model."""
+        return ChatOpenAI(
+            model_name=model_name,
+            openai_api_key=self.openai_api_key,
+            temperature=0.7
+        )
+        
+    def _init_claude_model(self) -> ChatAnthropic:
+        """Initialize Claude model."""
+        return ChatAnthropic(
+            model="claude-3-sonnet-20240229",
+            anthropic_api_key=self.anthropic_api_key,
+            temperature=0.7
+        )
+    
+    def get_model(self, model_name: str) -> BaseChatModel:
+        """Get the specified model."""
+        if model_name not in self.models:
+            raise ValueError(f"Unknown model: {model_name}")
+        return self.models[model_name]
+    
+    async def get_completion(
         self,
-        func,
-        max_retries: int = 3,
-        initial_delay: float = 1,
-        max_delay: float = 10,
-        exponential_base: float = 2,
-    ):
-        """Retry decorator with exponential backoff."""
-        retries = 0
-        delay = initial_delay
-
-        while retries < max_retries:
-            try:
-                return await func()
-            except Exception as e:
-                retries += 1
-                if retries == max_retries:
-                    raise e
-                
-                delay = min(delay * exponential_base, max_delay)
-                await asyncio.sleep(delay)
-
-    async def call_openai(
-        self,
-        messages: List[Dict[str, str]],
-        model: str = "gpt-4-turbo-preview",
-        temperature: float = 0.7,
-        max_tokens: Optional[int] = None,
+        prompt: str,
+        model_name: str = 'gpt-4',
+        system_prompt: Optional[str] = None
     ) -> str:
-        """Wrapper for OpenAI API calls"""
-        async def _call():
-            response = await self.openai_client.chat.completions.create(
-                model=model,
-                messages=messages,
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
-            return response.choices[0].message.content
-
-        return await self.retry_with_exponential_backoff(_call)
-
-    async def call_claude(
-        self,
-        messages: List[Dict[str, str]],
-        model: str = "claude-3-sonnet-20240229",
-        temperature: float = 0.7,
-        max_tokens: Optional[int] = None,
-    ) -> str:
-        """Wrapper for Anthropic Claude API calls"""
-        async def _call():
-            response = await self.anthropic_client.messages.create(
-                model=model,
-                messages=messages,
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
+        """Get completion from specified model."""
+        try:
+            model = self.get_model(model_name)
+            
+            messages = []
+            if system_prompt:
+                messages.append(SystemMessage(content=system_prompt))
+            messages.append(HumanMessage(content=prompt))
+            
+            self.logger.info(f"Getting completion from {model_name}")
+            response = await model.ainvoke(messages)
             return response.content
-
-        return await self.retry_with_exponential_backoff(_call)
-
-    async def process_audio(self, audio_file: bytes) -> str:
-        """Process audio using OpenAI Whisper"""
-        async def _call():
+            
+        except Exception as e:
+            self.logger.error(f"Error getting completion: {str(e)}")
+            raise
+    
+    async def transcribe_audio(self, audio_file: Union[str, bytes]) -> str:
+        """Transcribe audio using OpenAI Whisper API directly."""
+        try:
+            self.logger.info("Transcribing audio")
             transcript = await self.openai_client.audio.transcriptions.create(
                 model="whisper-1",
                 file=audio_file
             )
             return transcript.text
-
-        return await self.retry_with_exponential_backoff(_call)
-
-    async def process_file(self, file: bytes, file_type: str) -> str:
-        """Process file using OpenAI's file API"""
-        async def _call():
-            file_response = await self.openai_client.files.create(
-                file=file,
-                purpose="assistants"
+        except Exception as e:
+            self.logger.error(f"Error transcribing audio: {str(e)}")
+            raise
+            
+    async def create_speech(
+        self,
+        text: str,
+        model: str = "tts-1",
+        voice: str = "alloy",
+        output_path: Optional[str] = None
+    ) -> Union[bytes, str]:
+        """Create speech from text using OpenAI TTS API."""
+        try:
+            self.logger.info(f"Creating speech with voice: {voice}")
+            response = await self.openai_client.audio.speech.create(
+                model=model,
+                voice=voice,
+                input=text
             )
             
-            response = await self.openai_client.chat.completions.create(
-                model="gpt-4-turbo-preview",
-                messages=[
-                    {"role": "system", "content": f"Extract and summarize the content from this {file_type} file."},
-                    {"role": "user", "content": f"File ID: {file_response.id}"}
-                ]
-            )
-            return response.choices[0].message.content
+            if output_path:
+                # Save to file if path provided
+                output_path = Path(output_path)
+                response.stream_to_file(output_path)
+                return str(output_path)
+            else:
+                # Return bytes if no path provided
+                return response.read()
+                
+        except Exception as e:
+            self.logger.error(f"Error creating speech: {str(e)}")
+            raise
 
-        return await self.retry_with_exponential_backoff(_call)
+# Example usage
+if __name__ == "__main__":
+    import asyncio
+    
+    async def test_llm_wrapper():
+        # Set up logging
+        logging.basicConfig(
+            level=logging.INFO,
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        logger = logging.getLogger(__name__)
+        
+        try:
+            llm = LLMWrapper()
+            
+            # Test GPT-4
+            logger.info("Testing GPT-4...")
+            gpt_response = await llm.get_completion(
+                "Explain the concept of microservices in one paragraph.",
+                model_name='gpt-4'
+            )
+            logger.info("GPT-4 Response:\n%s", gpt_response)
+            
+            # Test Claude
+            logger.info("\nTesting Claude...")
+            claude_response = await llm.get_completion(
+                "Explain the concept of containerization in one paragraph.",
+                model_name='claude',
+                system_prompt="You are a helpful expert in software architecture."
+            )
+            logger.info("Claude Response:\n%s", claude_response)
+            
+            # Test audio transcription if you have an audio file
+            audio_file_path = "sample.mp3"
+            if Path(audio_file_path).exists():
+                logger.info("\nTesting audio transcription...")
+                with open(audio_file_path, "rb") as audio_file:
+                    transcript = await llm.transcribe_audio(audio_file)
+                logger.info("Transcription:\n%s", transcript)
+            
+            # Test text-to-speech
+            logger.info("\nTesting text-to-speech...")
+            speech_file = await llm.create_speech(
+                "Hello! This is a test of the text-to-speech system.",
+                voice="alloy",
+                output_path="test_speech.mp3"
+            )
+            logger.info(f"Speech saved to: {speech_file}")
+            
+        except Exception as e:
+            logger.error("Test failed: %s", str(e), exc_info=True)
+            raise
+
+    # Run the test
+    asyncio.run(test_llm_wrapper())
