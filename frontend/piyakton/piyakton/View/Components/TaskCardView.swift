@@ -16,13 +16,7 @@ struct TaskCardView: View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 HStack(spacing: 6) {
-                    Text("\(todoGroup.unitTime.rawValue)분")
-                        .font(.caption1SemiBold)
-                        .foregroundStyle(Color.gray900)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(todoGroup.unitTime.chipColor)
-                        .clipShape(RoundedRectangle(cornerRadius: 100))
+                    RequiredTimeChip(requiredTime: todoGroup.unitTime)
                     
                     if let title = todoGroup.title {
                         Text(title)
