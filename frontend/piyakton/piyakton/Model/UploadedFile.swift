@@ -15,6 +15,7 @@ enum FileType: String, Codable {
 struct UploadedFile: Identifiable, Codable {
     let id: String
     let name: String
+    var detail: String? = nil
     let type: FileType
     let url: URL
     
@@ -24,4 +25,15 @@ struct UploadedFile: Identifiable, Codable {
         self.type = type
         self.url = url
     }
+}
+
+extension UploadedFile {
+    static var debug: Self = .init(name: "한국현대사의 이해",
+                                   type: .pdf,
+                                   url: URL(string: "example")!)
+}
+
+enum FileState {
+    case uploading
+    case waiting
 }

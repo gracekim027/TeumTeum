@@ -8,31 +8,25 @@
 import SwiftUI
 
 struct MainTabView: View {
+    
     @ObservedObject var viewModel: MainViewModel
     @State private var isAddTaskModalPresented = false
     
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-            
-            // Add a button to present the modal
-            Button(action: {
+            Button {
                 isAddTaskModalPresented = true
-            }) {
+            } label: {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 24))
             }
         }
         .padding()
-        // Add the sheet modifier to present the modal
-        .sheet(isPresented: $isAddTaskModalPresented, content: {
+        .sheet(isPresented: $isAddTaskModalPresented) {
             AddTaskModalView(isPresented: $isAddTaskModalPresented)
-                .presentationDetents([.height(1000)]) // Adjust height as needed
+                .presentationDetents([.height(1000)])
                 .presentationDragIndicator(.visible)
-        })
+        }
     }
 }
 

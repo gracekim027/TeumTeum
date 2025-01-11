@@ -37,9 +37,22 @@
 		65CB9CED2D3215CC008803BF /* piyaktonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = piyaktonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B86D00012D3281F90031CCE3 /* Exceptions for "piyakton" folder in "piyakton" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 65CB9CD22D3215CA008803BF /* piyakton */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		65CB9CD52D3215CA008803BF /* piyakton */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B86D00012D3281F90031CCE3 /* Exceptions for "piyakton" folder in "piyakton" target */,
+			);
 			path = piyakton;
 			sourceTree = "<group>";
 		};
@@ -426,6 +439,7 @@
 				DEVELOPMENT_TEAM = 2CV8U244AV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = piyakton/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -458,6 +472,7 @@
 				DEVELOPMENT_TEAM = 2CV8U244AV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = piyakton/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
