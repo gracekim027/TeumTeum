@@ -59,7 +59,7 @@ struct AddTaskModalView: View {
                         .padding(.bottom, 30)
                     
                     if !viewModel.uploadedFiles.isEmpty {
-                        // Grid of uploaded files
+                        // 업로드된 파일이 있다면 보여줌 
                         LazyVGrid(columns: [
                             GridItem(.flexible()),
                             GridItem(.flexible())
