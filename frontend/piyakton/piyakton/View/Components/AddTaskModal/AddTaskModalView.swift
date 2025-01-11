@@ -36,17 +36,16 @@ struct AddTaskModalView: View {
                                 .multilineTextAlignment(.center)
                         }
                         Button(action: {
-                            isPresented = false // Close the modal
-                        }) {
-                            Text("홈으로 돌아가기")
-                                .bold()
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                        }
-                        .padding(.horizontal)
+                                                        isPresented = false
+                                                    }) {
+                                                        Text("홈으로 돌아가기")
+                                                            .bold()
+                                                            .frame(maxWidth: .infinity)
+                                                            .padding()
+                                                            .background(Color.blue)
+                                                            .foregroundColor(.white)
+                                                            .cornerRadius(10)
+                                                    }
                     }
                     .padding(24)
                 } else {

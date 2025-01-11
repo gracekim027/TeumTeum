@@ -7,14 +7,21 @@
 
 import SwiftUI
 
-struct UploadedFile: Identifiable {
-    let id = UUID()
+enum FileType: String, Codable {
+    case pdf
+    case mp3
+}
+
+struct UploadedFile: Identifiable, Codable {
+    let id: String
     let name: String
     let type: FileType
     let url: URL
-}
-
-enum FileType {
-    case pdf
-    case mp3
+    
+    init(id: String = UUID().uuidString, name: String, type: FileType, url: URL) {
+        self.id = id
+        self.name = name
+        self.type = type
+        self.url = url
+    }
 }
