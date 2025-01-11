@@ -17,20 +17,26 @@ struct UploadedFile: Identifiable, Codable {
     let name: String
     var detail: String? = nil
     let type: FileType
-    let url: URL
+    
+    var url: String
     
     init(id: String = UUID().uuidString, name: String, type: FileType, url: URL) {
         self.id = id
         self.name = name
         self.type = type
+        self.url = url.absoluteString
+    }
+    
+    init(id: String = UUID().uuidString, name: String, type: FileType, url: String) {
+        self.id = id
+        self.name = name
+        self.type = type
         self.url = url
     }
-}
-
-extension UploadedFile {
-    static var debug: Self = .init(name: "한국현대사의 이해",
-                                   type: .pdf,
-                                   url: URL(string: "example")!)
+    
+    func getURL() -> URL? {
+        return URL(string: url)
+    }
 }
 
 enum FileState {

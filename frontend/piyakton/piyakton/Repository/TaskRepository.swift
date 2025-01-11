@@ -32,7 +32,7 @@ class TaskRepository {
                                 .document(user)
                                 .collection(taskCollection)
                                 .addDocument(data: taskData)
-        
+        print(docRef)
         return docRef.documentID
     }
     

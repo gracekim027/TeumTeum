@@ -14,25 +14,44 @@ class StorageService {
     func uploadFile(url: URL, type: FileType) async throws -> URL {
         let fileName = "\(UUID().uuidString)_\(url.lastPathComponent)"
         let fileRef = storage.child("files/\(type)/\(fileName)")
-        
         let metadata = StorageMetadata()
         metadata.contentType = type == .pdf ? "application/pdf" : "audio/mpeg"
-
-        let _ = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<StorageMetadata, Error>) in
-                    fileRef.putFile(from: url, metadata: metadata) { metadata, error in
-                        if let error = error {
-                            continuation.resume(throwing: error)
-                            return
-                        }
-                        
-                        if let metadata = metadata {
-                            continuation.resume(returning: metadata)
-                        } else {
-                            continuation.resume(throwing: NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to upload file"]))
-                        }
+        
+        do {
+            _ = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<StorageMetadata, Error>) in
+                // Convert URL to Data
+                guard let data = try? Data(contentsOf: url) else {
+                    print("[StorageService] Failed to convert URL to Data")
+                    continuation.resume(throwing: NSError(domain: "StorageService",
+                                                         code: -1,
+                                                         userInfo: [NSLocalizedDescriptionKey: "Failed to read file data"]))
+                    return
+                }
+                
+                fileRef.putData(data, metadata: metadata) { metadata, error in
+                    
+                    if let error = error {
+                        print("[StorageService] Upload error: \(error.localizedDescription)")
+                        continuation.resume(throwing: error)
+                        return
+                    }
+                    
+                    if let metadata = metadata {
+                        continuation.resume(returning: metadata)
+                    } else {
+                        let unexpectedError = NSError(domain: "StorageService",
+                                                      code: -1,
+                                                      userInfo: [NSLocalizedDescriptionKey: "Failed to upload file"])
+                        continuation.resume(throwing: unexpectedError)
                     }
                 }
-        
-        return try await fileRef.downloadURL()
+            }
+            
+            let downloadURL = try await fileRef.downloadURL()
+            return downloadURL
+            
+        } catch {
+            throw error
+        }
     }
 }
