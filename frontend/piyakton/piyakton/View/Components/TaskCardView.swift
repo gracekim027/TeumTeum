@@ -10,6 +10,8 @@ import SwiftUI
 struct TaskCardView: View {
     
     let todoGroup: TodoGroup
+    let mode: Mode
+    
     @State private var isExpanded: Bool = false
     
     var body: some View {
@@ -34,18 +36,23 @@ struct TaskCardView: View {
                     .font(.body3Regular)
                     .foregroundStyle(Color.gray400)
                 
-                Image("chevron")
-                    .rotationEffect(.degrees(isExpanded ? 180 : 0))
+                if mode == .expandable {
+                    Image("chevron")
+                        .rotationEffect(.degrees(isExpanded ? 180 : 0))
+                }
             }
-            .padding(.vertical, 20)
+            .padding(.vertical, mode == .expandable ? 20 : 16)
             .contentShape(Rectangle())
             .onTapGesture {
-                withAnimation {
-                    isExpanded.toggle()
+                if mode == .expandable {
+                    withAnimation {
+                        isExpanded.toggle()
+                    }
                 }
             }
             
-            if isExpanded, let articleList = todoGroup.articleList {
+            if mode == .normal || isExpanded,
+               let articleList = todoGroup.articleList {
                 VStack {
                     ForEach(articleList, id: \.id) { article in
                         ArticlePreviewCell(article: article)
@@ -54,11 +61,19 @@ struct TaskCardView: View {
                 .padding(.bottom, 20)
             }
             
-            Rectangle()
-                .foregroundStyle(Color.whiteOpacity200)
-                .frame(maxWidth: .infinity)
-                .frame(height: 1)
+            if mode == .expandable {
+                Rectangle()
+                    .foregroundStyle(Color.whiteOpacity200)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 1)
+            }
         }
-        .padding(.horizontal, 24)
+    }
+}
+
+extension TaskCardView {
+    enum Mode {
+        case expandable
+        case normal
     }
 }
