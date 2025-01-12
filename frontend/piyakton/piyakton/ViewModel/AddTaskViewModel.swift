@@ -20,10 +20,7 @@ class AddTaskViewModel: ViewModel, ObservableObject {
     @Published var error: Error?
     @Published var createdTaskId: String?
     
-    private let taskService: TaskService
-    
     override init(container: DIContainer) {
-        self.taskService = container.taskService
         super.init(container: container)
         Task {
             await loadSampleFiles()
@@ -56,8 +53,6 @@ class AddTaskViewModel: ViewModel, ObservableObject {
         } else {
             print("Failed to load MP3 file: mp3_sample.mp3 not found in bundle")
         }
-        
-        //print("Uploaded Files: \(uploadedFiles)")
     }
 
     func addFile(_ url: URL) {
@@ -85,7 +80,7 @@ class AddTaskViewModel: ViewModel, ObservableObject {
         isLoading = true
         
         do {
-            let taskId = try await taskService.createTask(
+            let taskId = try await container.taskService.createTask(
                 description: taskDescription,
                 unitTime: time,
                 fileInfo: fileInfo

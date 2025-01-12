@@ -26,7 +26,6 @@ struct AddTaskModalView: View {
                 VStack(spacing: 0) {
                     if viewModel.showConfirmation {
                         UploadConfirmView(isPresented: $isPresented)
-                            .background(.black)
                             .padding(.top, 80)
                             .toolbar {
                                 ToolbarItem(placement: .cancellationAction) {
