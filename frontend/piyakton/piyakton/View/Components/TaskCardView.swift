@@ -9,8 +9,13 @@ import SwiftUI
 
 struct TaskCardView: View {
     
-    let todoGroup: TodoGroup
+    @State var todoGroup: TodoGroup
     let mode: Mode
+    
+    init(todoGroup: TodoGroup, mode: Mode) {
+        _todoGroup = .init(initialValue: todoGroup)
+        self.mode = mode
+    }
     
     @State private var isExpanded: Bool = false
     @State private var selected: Article?

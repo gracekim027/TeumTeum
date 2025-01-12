@@ -144,6 +144,9 @@ struct ArticleDetailView: View {
                     player?.pause()
                 }
             }
+            .onDisappear {
+                player?.pause()
+            }
             .onChange(of: isPlaying) { _, newValue in
                 if newValue {
                     playAudio()
