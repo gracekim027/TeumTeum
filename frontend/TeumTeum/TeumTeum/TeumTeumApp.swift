@@ -1,6 +1,6 @@
 //
-//  piyaktonApp.swift
-//  piyakton
+//  TeumTeumApp.swift
+//  TeumTeum
 //
 //  Created by Grace Kim on 1/11/25.
 //
@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseCore
 
 @main
-struct piyaktonApp: App {
+struct TeumTeumApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     

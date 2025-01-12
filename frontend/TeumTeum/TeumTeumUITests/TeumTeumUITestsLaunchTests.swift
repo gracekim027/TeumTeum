@@ -1,13 +1,13 @@
 //
-//  piyaktonUITestsLaunchTests.swift
-//  piyaktonUITests
+//  TeumTeumUITestsLaunchTests.swift
+//  TeumTeumUITests
 //
 //  Created by Grace Kim on 1/11/25.
 //
 
 import XCTest
 
-final class piyaktonUITestsLaunchTests: XCTestCase {
+final class TeumTeumUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

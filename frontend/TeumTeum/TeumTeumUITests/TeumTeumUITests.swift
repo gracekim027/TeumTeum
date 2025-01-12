@@ -1,13 +1,13 @@
 //
-//  piyaktonUITests.swift
-//  piyaktonUITests
+//  TeumTeumUITests.swift
+//  TeumTeumUITests
 //
 //  Created by Grace Kim on 1/11/25.
 //
 
 import XCTest
 
-final class piyaktonUITests: XCTestCase {
+final class TeumTeumUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
