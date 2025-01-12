@@ -45,9 +45,12 @@ struct UploadConfirmView: View {
                     .background(Color.grayOpacity800)
                     .clipShape(RoundedRectangle(cornerRadius: 100))
             }
+            
+            Spacer()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
-            Image("gradient").clipped()
+            Image("gradient").resizable().scaledToFill()
         )
     }
 }

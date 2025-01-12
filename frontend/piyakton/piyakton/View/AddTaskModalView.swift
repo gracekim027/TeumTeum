@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddTaskModalView: View {
     
-    @StateObject private var viewModel = AddTaskViewModel()
+    @ObservedObject var viewModel: AddTaskViewModel
     @Binding var isPresented: Bool
     
     @State private var isEditing = false
@@ -26,7 +26,6 @@ struct AddTaskModalView: View {
                 VStack(spacing: 0) {
                     if viewModel.showConfirmation {
                         UploadConfirmView(isPresented: $isPresented)
-                            .background(.black)
                             .padding(.top, 80)
                             .toolbar {
                                 ToolbarItem(placement: .cancellationAction) {
@@ -40,11 +39,11 @@ struct AddTaskModalView: View {
                                 }
                             }
                     } else {
-                        UploadingFileView() {
+                        UploadingFileView(taskList: $viewModel.uploadedFiles, taskDescription: $viewModel.taskDescription) {
                             openFilePicker = true
-                        } finishUploading: {
+                        } finishUploading: { time in
                             Task {
-                                await viewModel.submitTask()
+                                await viewModel.submitTask(with: time.rawValue)
                             }
                         }
                         
@@ -102,4 +101,3 @@ struct AddTaskModalView: View {
         }
     }
 }
-

@@ -9,16 +9,17 @@ import SwiftUI
 
 struct UploadingFileView: View {
     
+    @Binding var taskList: [UploadedFile]
+    @Binding var taskDescription: String
+    
     let showFilePicker: () -> Void
-    let finishUploading: () -> Void
+    let finishUploading: (RequiredTime) -> Void
     
     private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible())]
     
-    @State private var taskList: [UploadedFile] = []
-    @State private var taskDescription: String = ""
-    @State private var showTimeSelectionPopup: Bool = false
+    // local states
     @State private var selectedTime: RequiredTime?
-    
+    @State private var showTimeSelectionPopup: Bool = false
     @FocusState private var isFocused: Bool
     
     var body: some View {
@@ -39,7 +40,9 @@ struct UploadingFileView: View {
                             LazyVGrid(columns: columns, spacing: 12) {
                                 ForEach(taskList, id: \.id) { file in
                                     UploadedFileCell(file: file, state: .uploading) {
-                                        // on delete
+                                        if let index = taskList.firstIndex(where: { $0.id == file.id }) {
+                                            taskList.remove(at: index)
+                                        }
                                     }
                                 }
                             }
@@ -113,7 +116,9 @@ struct UploadingFileView: View {
                 Color.black.opacity(0.7)
                     .ignoresSafeArea(.all)
                 TimeSelectionView(isPresented: $showTimeSelectionPopup, selectedTime: $selectedTime) {
-                    finishUploading()
+                    if let selectedTime = selectedTime {
+                        finishUploading(selectedTime)
+                    }
                 }
             }
         }
@@ -123,13 +128,6 @@ struct UploadingFileView: View {
     }
 }
 
-#Preview {
-    UploadingFileView() {
-        
-    } finishUploading: {
-        
-    }
-}
 
 extension UploadingFileView {
     @ViewBuilder private func emptyTaskView() -> some View {

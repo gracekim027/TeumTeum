@@ -9,9 +9,8 @@ import SwiftUI
 import FirebaseFirestore
 
 @MainActor
-class AddTaskViewModel: ObservableObject {
+class AddTaskViewModel: ViewModel, ObservableObject {
     
-    @Published var selectedTime: Int? = nil
     @Published var showConfirmation = false
     @Published var taskDescription = ""
     @Published var uploadedFiles: [UploadedFile] = []
@@ -21,11 +20,11 @@ class AddTaskViewModel: ObservableObject {
     @Published var error: Error?
     @Published var createdTaskId: String?
     
-    private let taskService: TaskService
-    
-    init(taskService: TaskService = TaskService()) {
-        self.taskService = taskService
-        loadSampleFiles()
+    override init(container: DIContainer) {
+        super.init(container: container)
+        Task {
+            await loadSampleFiles()
+        }
     }
     
     func loadSampleFiles() {
@@ -54,8 +53,6 @@ class AddTaskViewModel: ObservableObject {
         } else {
             print("Failed to load MP3 file: mp3_sample.mp3 not found in bundle")
         }
-        
-        //print("Uploaded Files: \(uploadedFiles)")
     }
 
     func addFile(_ url: URL) {
@@ -74,12 +71,7 @@ class AddTaskViewModel: ObservableObject {
     }
     
     @MainActor
-    func submitTask() async {
-        guard let unitTime = selectedTime else {
-            error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Please select a time"])
-            return
-        }
-        
+    func submitTask(with time: Int) async {
         guard let fileInfo = uploadedFiles.first else {
             error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Please upload a file"])
             return
@@ -88,16 +80,14 @@ class AddTaskViewModel: ObservableObject {
         isLoading = true
         
         do {
-            let taskId = try await taskService.createTask(
+            let taskId = try await container.taskService.createTask(
                 description: taskDescription,
-                unitTime: unitTime,
+                unitTime: time,
                 fileInfo: fileInfo
             )
             
             self.createdTaskId = taskId
-            withAnimation(.easeInOut) {
-                self.showConfirmation = true
-            }
+            self.showConfirmation = true
             self.isLoading = false
         } catch {
             self.error = error
