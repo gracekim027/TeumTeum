@@ -22,7 +22,7 @@ class TaskRepository {
     func createTask(description: String, unitTime: Int, fileInfo: UploadedFile) async throws -> String {
         let taskData: [String: Any] = [
             "description": description,
-            "unitTime": unitTime,
+            "unit_time": unitTime,
             "done": false,
             "fileInfo": [
                 "id": fileInfo.id,
@@ -69,6 +69,10 @@ class TaskRepository {
                 
                 completion(todo)
             }
+    }
+    
+    func fetchTodoGroup() async throws -> [TodoGroup] {
+        return []
     }
     
     private func convertToUploadedFile(from dict: [String: Any]) -> UploadedFile {

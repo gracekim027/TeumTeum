@@ -40,12 +40,14 @@ struct ArticleDetailView: View {
     @State private var player: AVPlayer?
     @State private var currentTime: Double = 0
     
+    @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         GeometryReader { proxy in
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Button {
-                        // edit action
+                        dismiss()
                     } label: {
                         HStack(spacing: 0) {
                             Image("chevron-left")
@@ -152,15 +154,6 @@ struct ArticleDetailView: View {
                     pauseAudio()
                     currentTimer?.cancel()
                 }
-                .onChange(of: isPlaying) { _, newValue in
-                    if newValue {
-                        currentTimer?.cancel()
-                        timer = Timer.publish(every: 1, on: .main, in: .common)
-                        currentTimer = timer.connect()
-                    } else {
-                        currentTimer?.cancel()
-                    }
-                }
             }
             .sheet(isPresented: $showChatModal) {
                 ChatView(chatList: $chatMockup)
@@ -168,6 +161,7 @@ struct ArticleDetailView: View {
                     .presentationDragIndicator(.visible)
             }
         }
+        .background(Color.darkBackground.ignoresSafeArea(.all))
     }
 }
 

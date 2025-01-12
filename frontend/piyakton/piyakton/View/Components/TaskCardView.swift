@@ -13,6 +13,8 @@ struct TaskCardView: View {
     let mode: Mode
     
     @State private var isExpanded: Bool = false
+    @State private var selected: Article?
+    @State private var showDetailView: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -53,12 +55,30 @@ struct TaskCardView: View {
             
             if mode == .normal || isExpanded,
                let articleList = todoGroup.articleList {
+//                List(articleList, id: \.id) { article in
+//                    NavigationLink {
+//                        ArticleDetailView(todoGroup: todoGroup, selected: 0)
+//                    } label: {
+//                        ArticlePreviewCell(article: article)
+//                    }
+//                }
                 VStack {
                     ForEach(articleList, id: \.id) { article in
                         ArticlePreviewCell(article: article)
+                            .onTapGesture {
+                                showDetailView = true
+                            }
+//                        NavigationLink {
+//                            ArticleDetailView(todoGroup: todoGroup, selected: 0)
+//                        } label: {
+//                            ArticlePreviewCell(article: article)
+//                        }
                     }
                 }
                 .padding(.bottom, 20)
+                .onAppear {
+                    print("article: \(articleList)")
+                }
             }
             
             if mode == .expandable {
@@ -68,6 +88,12 @@ struct TaskCardView: View {
                     .frame(height: 1)
             }
         }
+        .sheet(isPresented: $showDetailView) {
+            ArticleDetailView(todoGroup: todoGroup, selected: 0)
+                .presentationDetents([.height(1000)])
+                .presentationDragIndicator(.visible)
+        }
+        .background(Color.darkBackground.ignoresSafeArea(.all))
     }
 }
 

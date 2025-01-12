@@ -12,7 +12,7 @@ class StorageService {
     private let storage = Storage.storage().reference()
     
     func uploadFile(url: URL, type: FileType) async throws -> URL {
-        let fileName = "\(UUID().uuidString)_\(url.lastPathComponent)"
+        let fileName = "\(url.lastPathComponent)"
         let fileRef = storage.child("files/\(type)/\(fileName)")
         let metadata = StorageMetadata()
         metadata.contentType = type == .pdf ? "application/pdf" : "audio/mpeg"

@@ -48,4 +48,9 @@ class TaskService {
             throw error
         }
     }
+    
+    func fetchTodoGroup() async throws -> [TodoGroup] {
+        let todoGroup = try await repository.fetchTodoGroup()
+        return todoGroup
+    }
 }

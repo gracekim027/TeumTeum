@@ -16,7 +16,9 @@ struct piyaktonApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainView(viewModel: .init(container: .init(db: appDelegate.database!)))
+            NavigationView {
+                MainView(viewModel: .init(container: .init(db: appDelegate.database!)))
+            }
           //ArticleDetailView(todoGroup: .debug1, selected: 0)
                 .background(Color.darkBackground.ignoresSafeArea(.all))
         }

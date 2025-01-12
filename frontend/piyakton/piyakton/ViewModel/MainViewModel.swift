@@ -9,6 +9,19 @@ import Foundation
 
 
 final class MainViewModel: ViewModel, ObservableObject {
-    @Published var todoGroupList: [TodoGroup] = [.debug1, .debug2]
     
+    @Published var todoGroupList: [TodoGroup] = [.debug1, .dummyData]
+    
+    override init(container: DIContainer) {
+        super.init(container: container)
+    }
+    
+    func fetchTodoGroupList() async {
+        do {
+            let groupList = try await container.taskService.fetchTodoGroup()
+            todoGroupList = todoGroupList
+        } catch {
+            print(error)
+        }
+    }
 }

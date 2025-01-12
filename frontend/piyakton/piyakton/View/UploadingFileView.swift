@@ -92,11 +92,6 @@ struct UploadingFileView: View {
                             .stroke(Color.whiteOpacity500, lineWidth: 0.5)
                     )
                     
-                    if isFocused {
-                        Color.gray800.opacity(0.85)
-                            .ignoresSafeArea(.all)
-                    }
-                    
                     MessageField(text: $taskDescription, placeholder: "배우고 싶은 목적은?") {
                         withAnimation(.easeInOut) {
                             showTimeSelectionPopup = true

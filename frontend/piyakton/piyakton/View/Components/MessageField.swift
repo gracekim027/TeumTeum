@@ -21,7 +21,6 @@ struct MessageField: View {
                 .font(.body1SemiBold)
                 .foregroundStyle(Color.grayOpacity700))
                 .font(.body1SemiBold)
-                .foregroundStyle(Color.gray900)
                 .focused($isFocused)
                 .onTapGesture {
                     isFocused = true

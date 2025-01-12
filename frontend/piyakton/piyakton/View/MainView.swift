@@ -46,6 +46,9 @@ struct MainView: View {
                     }
                 }
             }
+            .onAppear {
+                print(viewModel.todoGroupList)
+            }
         }
         .padding(.horizontal, 24)
         .sheet(isPresented: $isAddTaskModalPresented) {
