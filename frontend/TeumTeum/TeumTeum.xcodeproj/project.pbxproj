@@ -32,38 +32,38 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		65CB9CD32D3215CA008803BF /* piyakton.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = piyakton.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		65CB9CE32D3215CC008803BF /* piyaktonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = piyaktonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		65CB9CED2D3215CC008803BF /* piyaktonUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = piyaktonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65CB9CD32D3215CA008803BF /* TeumTeum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TeumTeum.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65CB9CE32D3215CC008803BF /* TeumTeumTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TeumTeumTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65CB9CED2D3215CC008803BF /* TeumTeumUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TeumTeumUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B86D00012D3281F90031CCE3 /* Exceptions for "piyakton" folder in "piyakton" target */ = {
+		B86D00012D3281F90031CCE3 /* Exceptions for "TeumTeum" folder in "TeumTeum" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 65CB9CD22D3215CA008803BF /* piyakton */;
+			target = 65CB9CD22D3215CA008803BF /* TeumTeum */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		65CB9CD52D3215CA008803BF /* piyakton */ = {
+		65CB9CD52D3215CA008803BF /* TeumTeum */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				B86D00012D3281F90031CCE3 /* Exceptions for "piyakton" folder in "piyakton" target */,
+				B86D00012D3281F90031CCE3 /* Exceptions for "TeumTeum" folder in "TeumTeum" target */,
 			);
-			path = piyakton;
+			path = TeumTeum;
 			sourceTree = "<group>";
 		};
-		65CB9CE62D3215CC008803BF /* piyaktonTests */ = {
+		65CB9CE62D3215CC008803BF /* TeumTeumTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = piyaktonTests;
+			path = TeumTeumTests;
 			sourceTree = "<group>";
 		};
-		65CB9CF02D3215CC008803BF /* piyaktonUITests */ = {
+		65CB9CF02D3215CC008803BF /* TeumTeumUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = piyaktonUITests;
+			path = TeumTeumUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -101,9 +101,9 @@
 		65CB9CCA2D3215CA008803BF = {
 			isa = PBXGroup;
 			children = (
-				65CB9CD52D3215CA008803BF /* piyakton */,
-				65CB9CE62D3215CC008803BF /* piyaktonTests */,
-				65CB9CF02D3215CC008803BF /* piyaktonUITests */,
+				65CB9CD52D3215CA008803BF /* TeumTeum */,
+				65CB9CE62D3215CC008803BF /* TeumTeumTests */,
+				65CB9CF02D3215CC008803BF /* TeumTeumUITests */,
 				65CB9CD42D3215CA008803BF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -111,9 +111,9 @@
 		65CB9CD42D3215CA008803BF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65CB9CD32D3215CA008803BF /* piyakton.app */,
-				65CB9CE32D3215CC008803BF /* piyaktonTests.xctest */,
-				65CB9CED2D3215CC008803BF /* piyaktonUITests.xctest */,
+				65CB9CD32D3215CA008803BF /* TeumTeum.app */,
+				65CB9CE32D3215CC008803BF /* TeumTeumTests.xctest */,
+				65CB9CED2D3215CC008803BF /* TeumTeumUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,9 +121,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		65CB9CD22D3215CA008803BF /* piyakton */ = {
+		65CB9CD22D3215CA008803BF /* TeumTeum */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65CB9CF72D3215CC008803BF /* Build configuration list for PBXNativeTarget "piyakton" */;
+			buildConfigurationList = 65CB9CF72D3215CC008803BF /* Build configuration list for PBXNativeTarget "TeumTeum" */;
 			buildPhases = (
 				65CB9CCF2D3215CA008803BF /* Sources */,
 				65CB9CD02D3215CA008803BF /* Frameworks */,
@@ -134,9 +134,9 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				65CB9CD52D3215CA008803BF /* piyakton */,
+				65CB9CD52D3215CA008803BF /* TeumTeum */,
 			);
-			name = piyakton;
+			name = TeumTeum;
 			packageProductDependencies = (
 				65FE153B2D32827900C064B5 /* FirebaseAuth */,
 				65FE153D2D32827900C064B5 /* FirebaseDatabase */,
@@ -145,12 +145,12 @@
 				65FE15432D32827900C064B5 /* FirebaseStorage */,
 			);
 			productName = piyakton;
-			productReference = 65CB9CD32D3215CA008803BF /* piyakton.app */;
+			productReference = 65CB9CD32D3215CA008803BF /* TeumTeum.app */;
 			productType = "com.apple.product-type.application";
 		};
-		65CB9CE22D3215CC008803BF /* piyaktonTests */ = {
+		65CB9CE22D3215CC008803BF /* TeumTeumTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65CB9CFA2D3215CC008803BF /* Build configuration list for PBXNativeTarget "piyaktonTests" */;
+			buildConfigurationList = 65CB9CFA2D3215CC008803BF /* Build configuration list for PBXNativeTarget "TeumTeumTests" */;
 			buildPhases = (
 				65CB9CDF2D3215CC008803BF /* Sources */,
 				65CB9CE02D3215CC008803BF /* Frameworks */,
@@ -162,18 +162,18 @@
 				65CB9CE52D3215CC008803BF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				65CB9CE62D3215CC008803BF /* piyaktonTests */,
+				65CB9CE62D3215CC008803BF /* TeumTeumTests */,
 			);
-			name = piyaktonTests;
+			name = TeumTeumTests;
 			packageProductDependencies = (
 			);
 			productName = piyaktonTests;
-			productReference = 65CB9CE32D3215CC008803BF /* piyaktonTests.xctest */;
+			productReference = 65CB9CE32D3215CC008803BF /* TeumTeumTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		65CB9CEC2D3215CC008803BF /* piyaktonUITests */ = {
+		65CB9CEC2D3215CC008803BF /* TeumTeumUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65CB9CFD2D3215CC008803BF /* Build configuration list for PBXNativeTarget "piyaktonUITests" */;
+			buildConfigurationList = 65CB9CFD2D3215CC008803BF /* Build configuration list for PBXNativeTarget "TeumTeumUITests" */;
 			buildPhases = (
 				65CB9CE92D3215CC008803BF /* Sources */,
 				65CB9CEA2D3215CC008803BF /* Frameworks */,
@@ -185,13 +185,13 @@
 				65CB9CEF2D3215CC008803BF /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				65CB9CF02D3215CC008803BF /* piyaktonUITests */,
+				65CB9CF02D3215CC008803BF /* TeumTeumUITests */,
 			);
-			name = piyaktonUITests;
+			name = TeumTeumUITests;
 			packageProductDependencies = (
 			);
 			productName = piyaktonUITests;
-			productReference = 65CB9CED2D3215CC008803BF /* piyaktonUITests.xctest */;
+			productReference = 65CB9CED2D3215CC008803BF /* TeumTeumUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -217,7 +217,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 65CB9CCE2D3215CA008803BF /* Build configuration list for PBXProject "piyakton" */;
+			buildConfigurationList = 65CB9CCE2D3215CA008803BF /* Build configuration list for PBXProject "TeumTeum" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -234,9 +234,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				65CB9CD22D3215CA008803BF /* piyakton */,
-				65CB9CE22D3215CC008803BF /* piyaktonTests */,
-				65CB9CEC2D3215CC008803BF /* piyaktonUITests */,
+				65CB9CD22D3215CA008803BF /* TeumTeum */,
+				65CB9CE22D3215CC008803BF /* TeumTeumTests */,
+				65CB9CEC2D3215CC008803BF /* TeumTeumUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -292,12 +292,12 @@
 /* Begin PBXTargetDependency section */
 		65CB9CE52D3215CC008803BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 65CB9CD22D3215CA008803BF /* piyakton */;
+			target = 65CB9CD22D3215CA008803BF /* TeumTeum */;
 			targetProxy = 65CB9CE42D3215CC008803BF /* PBXContainerItemProxy */;
 		};
 		65CB9CEF2D3215CC008803BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 65CB9CD22D3215CA008803BF /* piyakton */;
+			target = 65CB9CD22D3215CA008803BF /* TeumTeum */;
 			targetProxy = 65CB9CEE2D3215CC008803BF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -305,7 +305,7 @@
 /* Begin XCBuildConfiguration section */
 		65CB9CF52D3215CC008803BF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 65CB9CD52D3215CA008803BF /* piyakton */;
+			baseConfigurationReferenceAnchor = 65CB9CD52D3215CA008803BF /* TeumTeum */;
 			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -370,7 +370,7 @@
 		};
 		65CB9CF62D3215CC008803BF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 65CB9CD52D3215CA008803BF /* piyakton */;
+			baseConfigurationReferenceAnchor = 65CB9CD52D3215CA008803BF /* TeumTeum */;
 			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -428,18 +428,18 @@
 		};
 		65CB9CF82D3215CC008803BF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 65CB9CD52D3215CA008803BF /* piyakton */;
+			baseConfigurationReferenceAnchor = 65CB9CD52D3215CA008803BF /* TeumTeum */;
 			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"piyakton/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"TeumTeum/Preview Content\"";
 				DEVELOPMENT_TEAM = H3J2ZWWZQV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = piyakton/Info.plist;
+				INFOPLIST_FILE = TeumTeum/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -451,7 +451,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.grace.piyakton;
+				PRODUCT_BUNDLE_IDENTIFIER = com.grace.teumteum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -461,18 +461,18 @@
 		};
 		65CB9CF92D3215CC008803BF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 65CB9CD52D3215CA008803BF /* piyakton */;
+			baseConfigurationReferenceAnchor = 65CB9CD52D3215CA008803BF /* TeumTeum */;
 			baseConfigurationReferenceRelativePath = Config.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"piyakton/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"TeumTeum/Preview Content\"";
 				DEVELOPMENT_TEAM = H3J2ZWWZQV;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = piyakton/Info.plist;
+				INFOPLIST_FILE = TeumTeum/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -484,7 +484,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.grace.piyakton;
+				PRODUCT_BUNDLE_IDENTIFIER = com.grace.teumteum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -507,7 +507,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/piyakton.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/piyakton";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TeumTeum.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TeumTeum";
 			};
 			name = Debug;
 		};
@@ -526,7 +526,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/piyakton.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/piyakton";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TeumTeum.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TeumTeum";
 			};
 			name = Release;
 		};
@@ -567,7 +567,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		65CB9CCE2D3215CA008803BF /* Build configuration list for PBXProject "piyakton" */ = {
+		65CB9CCE2D3215CA008803BF /* Build configuration list for PBXProject "TeumTeum" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65CB9CF52D3215CC008803BF /* Debug */,
@@ -576,7 +576,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65CB9CF72D3215CC008803BF /* Build configuration list for PBXNativeTarget "piyakton" */ = {
+		65CB9CF72D3215CC008803BF /* Build configuration list for PBXNativeTarget "TeumTeum" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65CB9CF82D3215CC008803BF /* Debug */,
@@ -585,7 +585,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65CB9CFA2D3215CC008803BF /* Build configuration list for PBXNativeTarget "piyaktonTests" */ = {
+		65CB9CFA2D3215CC008803BF /* Build configuration list for PBXNativeTarget "TeumTeumTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65CB9CFB2D3215CC008803BF /* Debug */,
@@ -594,7 +594,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65CB9CFD2D3215CC008803BF /* Build configuration list for PBXNativeTarget "piyaktonUITests" */ = {
+		65CB9CFD2D3215CC008803BF /* Build configuration list for PBXNativeTarget "TeumTeumUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65CB9CFE2D3215CC008803BF /* Debug */,
