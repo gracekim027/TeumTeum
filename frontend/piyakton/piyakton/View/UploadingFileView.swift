@@ -9,16 +9,16 @@ import SwiftUI
 
 struct UploadingFileView: View {
     
+    @Binding var taskList: [UploadedFile]
+    @Binding var taskDescription: String
+    
     let showFilePicker: () -> Void
-    let finishUploading: () -> Void
+    let finishUploading: (RequiredTime) -> Void
     
     private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible())]
     
-    @Binding var taskList: [UploadedFile]
-    @Binding var taskDescription: String
-    @Binding private var selectedTime: RequiredTime?
-    
     // local states
+    @State private var selectedTime: RequiredTime?
     @State private var showTimeSelectionPopup: Bool = false
     @FocusState private var isFocused: Bool
     
@@ -116,7 +116,9 @@ struct UploadingFileView: View {
                 Color.black.opacity(0.7)
                     .ignoresSafeArea(.all)
                 TimeSelectionView(isPresented: $showTimeSelectionPopup, selectedTime: $selectedTime) {
-                    finishUploading()
+                    if let selectedTime = selectedTime {
+                        finishUploading(selectedTime)
+                    }
                 }
             }
         }

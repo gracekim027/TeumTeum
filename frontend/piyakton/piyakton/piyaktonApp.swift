@@ -14,13 +14,9 @@ struct piyaktonApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
-    private var container: DIContainer {
-        DIContainer(firestore: appDelegate.database!)
-    }
-    
     var body: some Scene {
         WindowGroup {
-            MainView(viewModel: .init(container: container))
+            MainView(viewModel: .init(container: .init(db: appDelegate.database!)))
                 .background(Color.darkBackground.ignoresSafeArea(.all))
         }
     }
@@ -38,12 +34,11 @@ final class DIContainer {
     let userService: UserService
     let taskService: TaskService
     
-    init(firestore: Firestore) {
-            let userRepository = UserRepositoryImpl()
-            self.userService = UserServiceImpl(userRepository: userRepository)
-            
-            // Pass Firestore instance to TaskRepository
-            let taskRepository = TaskRepository(db: firestore)
-            self.taskService = TaskService(repository: taskRepository)
-        }
+    init(db: Firestore) {
+        let userRepository = UserRepositoryImpl()
+        self.userService = UserServiceImpl(userRepository: userRepository)
+        
+        let taskRepository = TaskRepository(db: db)
+        self.taskService = TaskService(repository: taskRepository)
+    }
 }

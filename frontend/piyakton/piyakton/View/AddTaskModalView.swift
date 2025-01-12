@@ -40,11 +40,11 @@ struct AddTaskModalView: View {
                                 }
                             }
                     } else {
-                        UploadingFileView() {
+                        UploadingFileView(taskList: $viewModel.uploadedFiles, taskDescription: $viewModel.taskDescription) {
                             openFilePicker = true
-                        } finishUploading: {
+                        } finishUploading: { time in
                             Task {
-                                await viewModel.submitTask()
+                                await viewModel.submitTask(with: time.rawValue)
                             }
                         }
                         

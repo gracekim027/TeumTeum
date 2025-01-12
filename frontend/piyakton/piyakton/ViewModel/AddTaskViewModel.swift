@@ -11,7 +11,6 @@ import FirebaseFirestore
 @MainActor
 class AddTaskViewModel: ViewModel, ObservableObject {
     
-    @Published var selectedTime: Int? = nil
     @Published var showConfirmation = false
     @Published var taskDescription = ""
     @Published var uploadedFiles: [UploadedFile] = []
@@ -77,12 +76,7 @@ class AddTaskViewModel: ViewModel, ObservableObject {
     }
     
     @MainActor
-    func submitTask() async {
-        guard let unitTime = selectedTime else {
-            error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Please select a time"])
-            return
-        }
-        
+    func submitTask(with time: Int) async {
         guard let fileInfo = uploadedFiles.first else {
             error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Please upload a file"])
             return
@@ -93,14 +87,12 @@ class AddTaskViewModel: ViewModel, ObservableObject {
         do {
             let taskId = try await taskService.createTask(
                 description: taskDescription,
-                unitTime: unitTime,
+                unitTime: time,
                 fileInfo: fileInfo
             )
             
             self.createdTaskId = taskId
-            withAnimation(.easeInOut) {
-                self.showConfirmation = true
-            }
+            self.showConfirmation = true
             self.isLoading = false
         } catch {
             self.error = error
