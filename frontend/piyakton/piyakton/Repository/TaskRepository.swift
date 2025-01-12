@@ -9,10 +9,14 @@ import SwiftUI
 import FirebaseFirestore
 
 class TaskRepository {
-    private let db = Firestore.firestore()
+    private var db: Firestore
     private let userCollection = "users"
     private let user = "test"
     private let taskCollection = "tasks"
+    
+    init(db: Firestore) {
+            self.db = db
+    }
     
     func createTask(description: String, unitTime: Int, fileInfo: UploadedFile) async throws -> String {
         let taskData: [String: Any] = [

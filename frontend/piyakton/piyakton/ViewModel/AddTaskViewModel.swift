@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 
 @MainActor
-class AddTaskViewModel: ObservableObject {
+class AddTaskViewModel: ViewModel, ObservableObject {
     
     @Published var selectedTime: Int? = nil
     @Published var showConfirmation = false
@@ -23,9 +23,12 @@ class AddTaskViewModel: ObservableObject {
     
     private let taskService: TaskService
     
-    init(taskService: TaskService = TaskService()) {
-        self.taskService = taskService
-        loadSampleFiles()
+    override init(container: DIContainer) {
+        self.taskService = container.taskService
+        super.init(container: container)
+        Task {
+            await loadSampleFiles()
+        }
     }
     
     func loadSampleFiles() {

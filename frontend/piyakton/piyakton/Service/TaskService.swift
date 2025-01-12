@@ -14,13 +14,14 @@ class TaskService {
     private let repository: TaskRepository
     private let storageService: StorageService
     
-    init(repository: TaskRepository = TaskRepository(),
+    init(repository: TaskRepository,
          storageService: StorageService = StorageService()) {
         self.repository = repository
         self.storageService = storageService
     }
     
     func createTask(description: String, unitTime: Int, fileInfo: UploadedFile) async throws -> String {
+        print("[TaskService] created task")
     
         do {
             guard let originalURL = fileInfo.getURL() else {

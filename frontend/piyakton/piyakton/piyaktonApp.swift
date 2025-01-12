@@ -6,22 +6,21 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseCore
 
 @main
 struct piyaktonApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
-    private let container: DIContainer
-    
-    init() {
-        self.container = .init()
+    private var container: DIContainer {
+        DIContainer(firestore: appDelegate.database!)
     }
     
     var body: some Scene {
         WindowGroup {
             MainView(viewModel: .init(container: container))
-            //ArticleDetailView(todoGroup: .debug1, selected: 0)
                 .background(Color.darkBackground.ignoresSafeArea(.all))
         }
     }
@@ -37,9 +36,14 @@ final class PathState: ObservableObject {
 
 final class DIContainer {
     let userService: UserService
+    let taskService: TaskService
     
-    init() {
-        let userRepository = UserRepositoryImpl()
-        self.userService = UserServiceImpl(userRepository: userRepository)
-    }
+    init(firestore: Firestore) {
+            let userRepository = UserRepositoryImpl()
+            self.userService = UserServiceImpl(userRepository: userRepository)
+            
+            // Pass Firestore instance to TaskRepository
+            let taskRepository = TaskRepository(db: firestore)
+            self.taskService = TaskService(repository: taskRepository)
+        }
 }

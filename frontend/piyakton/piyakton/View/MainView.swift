@@ -49,7 +49,9 @@ struct MainView: View {
             }
         }
         .sheet(isPresented: $isAddTaskModalPresented) {
-            AddTaskModalView(isPresented: $isAddTaskModalPresented)
+            AddTaskModalView(
+                viewModel: AddTaskViewModel(container: viewModel.container),
+                isPresented: $isAddTaskModalPresented)
                 .presentationDetents([.height(1000)])
                 .presentationDragIndicator(.visible)
         }
@@ -57,12 +59,4 @@ struct MainView: View {
     }
 }
 
-extension DIContainer {
-    static var preview: DIContainer {
-        DIContainer(/* add your dependencies here */)
-    }
-}
 
-#Preview {
-    MainView(viewModel: MainViewModel(container: .preview))
-}

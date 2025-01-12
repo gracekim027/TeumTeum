@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddTaskModalView: View {
     
-    @StateObject private var viewModel = AddTaskViewModel()
+    @ObservedObject var viewModel: AddTaskViewModel
     @Binding var isPresented: Bool
     
     @State private var isEditing = false
@@ -102,4 +102,3 @@ struct AddTaskModalView: View {
         }
     }
 }
-
