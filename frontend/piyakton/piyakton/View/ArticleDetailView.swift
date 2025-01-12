@@ -34,6 +34,7 @@ struct ArticleDetailView: View {
     @State private var currentTimer: Cancellable?
     @State private var remainingSec: Int
     @State private var player: AVPlayer?
+    @State private var currentTime: Double = 0
     
     var body: some View {
         GeometryReader { proxy in
@@ -120,13 +121,18 @@ struct ArticleDetailView: View {
             }
             .onAppear {
                 isPlaying = true
+                setupAudioPlayer()
             }
             // timer
             .onReceive(timer) { _ in
                 if remainingSec > 0 {
                     remainingSec -= 1
+                    if let player = player {
+                        currentTime = CMTimeGetSeconds(player.currentTime())
+                    }
                 } else {
                     currentTimer?.cancel()
+                    player?.pause()
                 }
             }
             .onChange(of: isPlaying) { _, newValue in
@@ -227,20 +233,35 @@ extension ArticleDetailView {
 }
 
 extension ArticleDetailView {
-    private func playAudio() {
-        guard let url = Bundle.main.url(forResource: "hashing_audio", withExtension: "mp3")
-        //guard let url = URL(string: "example")
-         else {
-            return
-        }
-        player = AVPlayer(url: url)
-        player?.play()
-    }
-    
-    private func pauseAudio() {
-        player?.pause()
-    }
-}
+    private func setupAudioPlayer() {
+           guard let url = Bundle.main.url(forResource: "hashing_audio", withExtension: "mp3") else {
+               return
+           }
+           let playerItem = AVPlayerItem(url: url)
+           player = AVPlayer(playerItem: playerItem)
+           player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 600), queue: .main) { time in
+               currentTime = CMTimeGetSeconds(time)
+           }
+       }
+       
+       private func playAudio() {
+           if let player = player {
+               let seekTime = CMTime(seconds: currentTime, preferredTimescale: 600)
+               player.seek(to: seekTime) { finished in
+                   if finished {
+                       player.play()
+                   }
+               }
+           }
+       }
+       
+       private func pauseAudio() {
+           if let player = player {
+               currentTime = CMTimeGetSeconds(player.currentTime())
+               player.pause()
+           }
+       }
+   }
 
 struct ScalingButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
