@@ -34,20 +34,20 @@ struct MainView: View {
                         .frame(width: 28, height: 28)
                 }
             }
-            .padding(.horizontal, 24)
             .frame(height: 44)
             
             Image("logo-text-short")
-                .padding(24)
+                .padding(.vertical, 24)
             
             ScrollView(.vertical) {
                 VStack {
                     ForEach(viewModel.todoGroupList, id: \.id) {
-                        TaskCardView(todoGroup: $0)
+                        TaskCardView(todoGroup: $0, mode: .expandable)
                     }
                 }
             }
         }
+        .padding(.horizontal, 24)
         .sheet(isPresented: $isAddTaskModalPresented) {
             AddTaskModalView(isPresented: $isAddTaskModalPresented)
                 .presentationDetents([.height(1000)])
