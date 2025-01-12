@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import AVFoundation
 
 struct ArticleDetailView: View {
     
@@ -32,6 +33,7 @@ struct ArticleDetailView: View {
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common)
     @State private var currentTimer: Cancellable?
     @State private var remainingSec: Int
+    @State private var player: AVPlayer?
     
     var body: some View {
         GeometryReader { proxy in
@@ -129,10 +131,12 @@ struct ArticleDetailView: View {
             }
             .onChange(of: isPlaying) { _, newValue in
                 if newValue {
+                    playAudio()
                     currentTimer?.cancel()
                     timer = Timer.publish(every: 1, on: .main, in: .common)
                     currentTimer = timer.connect()
                 } else {
+                    pauseAudio()
                     currentTimer?.cancel()
                 }
             }
@@ -219,6 +223,22 @@ extension ArticleDetailView {
             
             
         }
+    }
+}
+
+extension ArticleDetailView {
+    private func playAudio() {
+        guard let url = Bundle.main.url(forResource: "hashing_audio", withExtension: "mp3")
+        //guard let url = URL(string: "example")
+         else {
+            return
+        }
+        player = AVPlayer(url: url)
+        player?.play()
+    }
+    
+    private func pauseAudio() {
+        player?.pause()
     }
 }
 
