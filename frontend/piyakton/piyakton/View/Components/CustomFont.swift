@@ -11,6 +11,7 @@ extension Font {
     static let display2SemiBold: Font = .custom(InteropFont.semiBold.name, size: 36)
     
     static let header1Bold: Font = .custom(InteropFont.bold.name, size: 28)
+    static let header2SemiBold: Font = .custom(InteropFont.semiBold.name, size: 24)
     static let header2Bold: Font = .custom(InteropFont.bold.name, size: 24)
     
     static let title1SemiBold: Font = .custom(InteropFont.semiBold.name, size: 22)
