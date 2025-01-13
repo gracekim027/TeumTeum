@@ -49,9 +49,7 @@ struct ChatView: View {
                 .padding(.bottom, 20)
             }
             .padding(.horizontal, 24)
-            .background(
-                Image("gradient").clipped()
-            )
+            .background(Image("gradient").clipped())
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button {

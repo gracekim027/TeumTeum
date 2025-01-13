@@ -39,27 +39,22 @@ struct MainView: View {
             Image("logo-text-short")
                 .padding(.vertical, 24)
             
-            ScrollView(.vertical) {
-                VStack {
-                    ForEach(viewModel.todoGroupList, id: \.id) {
-                        TaskCardView(todoGroup: $0, mode: .expandable)
-                    }
-                }
+            List(viewModel.todoGroupList, id: \.id) {
+                TaskCardView(todoGroup: $0, mode: .expandable)
+                    .listRowInsets(EdgeInsets())
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.darkBackground)
             }
-            .onAppear {
-                print(viewModel.todoGroupList)
-            }
+            .listStyle(.plain)
         }
         .padding(.horizontal, 24)
         .sheet(isPresented: $isAddTaskModalPresented) {
             AddTaskModalView(
                 viewModel: AddTaskViewModel(container: viewModel.container),
                 isPresented: $isAddTaskModalPresented)
-                .presentationDetents([.height(1000)])
+                .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
+                .interactiveDismissDisabled()
         }
-        .background(Color.darkBackground.ignoresSafeArea(.all))
     }
 }
-
-
