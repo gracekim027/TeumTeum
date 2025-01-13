@@ -18,9 +18,8 @@ struct TeumTeumApp: App {
         WindowGroup {
             NavigationView {
                 MainView(viewModel: .init(container: .init(db: appDelegate.database!)))
+                    .background(Color.darkBackground)
             }
-          //ArticleDetailView(todoGroup: .debug1, selected: 0)
-                .background(Color.darkBackground.ignoresSafeArea(.all))
         }
     }
 }

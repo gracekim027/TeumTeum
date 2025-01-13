@@ -164,6 +164,7 @@ struct ArticleDetailView: View {
                     .presentationDragIndicator(.visible)
             }
         }
+        .toolbar(.hidden, for: .navigationBar)
         .background(Color.darkBackground.ignoresSafeArea(.all))
     }
 }

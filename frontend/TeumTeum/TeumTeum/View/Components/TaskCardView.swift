@@ -81,9 +81,6 @@ struct TaskCardView: View {
                     }
                 }
                 .padding(.bottom, 20)
-                .onAppear {
-                    print("article: \(articleList)")
-                }
             }
             
             if mode == .expandable {
@@ -95,10 +92,9 @@ struct TaskCardView: View {
         }
         .sheet(isPresented: $showDetailView) {
             ArticleDetailView(todoGroup: todoGroup, selected: 0)
-                .presentationDetents([.height(1000)])
+                .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
         }
-        .background(Color.darkBackground.ignoresSafeArea(.all))
     }
 }
 
