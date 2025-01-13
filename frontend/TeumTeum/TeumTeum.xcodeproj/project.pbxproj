@@ -37,9 +37,22 @@
 		65CB9CED2D3215CC008803BF /* TeumTeumUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TeumTeumUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B86D042B2D34B51F0031CCE3 /* Exceptions for "TeumTeum" folder in "TeumTeum" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 65CB9CD22D3215CA008803BF /* TeumTeum */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		65CB9CD52D3215CA008803BF /* TeumTeum */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B86D042B2D34B51F0031CCE3 /* Exceptions for "TeumTeum" folder in "TeumTeum" target */,
+			);
 			path = TeumTeum;
 			sourceTree = "<group>";
 		};
