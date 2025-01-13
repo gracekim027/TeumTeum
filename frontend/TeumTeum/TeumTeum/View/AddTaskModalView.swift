@@ -95,6 +95,17 @@ struct AddTaskModalView: View {
                         isFocused = false
                     }
                 }
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button {
+                            isPresented = false
+                        } label: {
+                            Text("취소")
+                                .font(.body1Medium)
+                                .foregroundStyle(Color.whiteOpacity700)
+                        }
+                    }
+                }
                 .background(Image("gradient").clipped())
                 .background(Color.darkBackground)
             }

@@ -19,6 +19,7 @@ struct TeumTeumApp: App {
             NavigationView {
                 MainView(viewModel: .init(container: .init(db: appDelegate.database!)))
                     .background(Color.darkBackground)
+                    .preferredColorScheme(.dark)
             }
         }
     }
