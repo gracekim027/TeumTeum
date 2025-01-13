@@ -48,7 +48,7 @@ struct UploadingFileView: View {
                     }
                 }
                 .padding(16)
-                .frame(height: 330)
+                .frame(minHeight: 330, maxHeight: 400)
                 .frame(maxWidth: .infinity)
                 .background(Color.whiteOpacity100)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
