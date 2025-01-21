@@ -10,9 +10,9 @@ import SwiftUI
 struct UploadingFileView: View {
     
     @Binding var taskList: [UploadedFile]
-    @Binding var taskDescription: String
     
     let showFilePicker: () -> Void
+    let removeFile: (UploadedFile) -> Void
     let finishUploading: (RequiredTime) -> Void
     
     private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible())]
@@ -40,9 +40,7 @@ struct UploadingFileView: View {
                             LazyVGrid(columns: columns, spacing: 12) {
                                 ForEach(taskList, id: \.id) { file in
                                     UploadedFileCell(file: file, state: .uploading) {
-                                        if let index = taskList.firstIndex(where: { $0.id == file.id }) {
-                                            taskList.remove(at: index)
-                                        }
+                                        removeFile(file)
                                     }
                                 }
                             }
@@ -50,7 +48,7 @@ struct UploadingFileView: View {
                     }
                 }
                 .padding(16)
-                .frame(height: 420)
+                .frame(minHeight: 330, maxHeight: 400)
                 .frame(maxWidth: .infinity)
                 .background(Color.whiteOpacity100)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -65,7 +63,6 @@ struct UploadingFileView: View {
                             Image("plus-circle")
                                 .resizable()
                                 .frame(width: 32, height: 32)
-                            
                             VStack(alignment: .leading, spacing: 0) {
                                 Text("파일 업로드")
                                     .font(.title3SemiBold)
@@ -75,9 +72,7 @@ struct UploadingFileView: View {
                                     .font(.body3Medium)
                                     .foregroundStyle(Color.gray600)
                             }
-                            
                             Spacer()
-                            
                             Text("최대 512mb")
                                 .font(.body3Medium)
                                 .foregroundStyle(Color.gray500)
@@ -91,16 +86,6 @@ struct UploadingFileView: View {
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(Color.whiteOpacity500, lineWidth: 0.5)
                     )
-                    
-                    MessageField(text: $taskDescription, placeholder: "배우고 싶은 목적은?") {
-                        withAnimation(.easeInOut) {
-                            showTimeSelectionPopup = true
-                        }
-                    }
-                    .focused($isFocused)
-                    .onTapGesture {
-                        isFocused = true
-                    }
                 }
             }
             .padding(.top, 28)
@@ -117,9 +102,6 @@ struct UploadingFileView: View {
                 }
             }
         }
-        .background(
-            Image("gradient").clipped()
-        )
     }
 }
 

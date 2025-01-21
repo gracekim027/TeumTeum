@@ -11,93 +11,104 @@ struct AddTaskModalView: View {
     
     @ObservedObject var viewModel: AddTaskViewModel
     @Binding var isPresented: Bool
-    
-    @State private var isEditing = false
+
     @State private var openFilePicker: Bool = false
+    @State private var taskDescription: String = ""
     
     @FocusState private var isFocused: Bool
     
+    let textFieldId: String = "textField"
+    
     var body: some View {
         NavigationView {
-            ZStack(alignment: .top) {
-                Color.black
-                    .edgesIgnoringSafeArea(.all)
-                
+            if viewModel.showConfirmation {
                 VStack(spacing: 0) {
-                    if viewModel.showConfirmation {
-                        UploadConfirmView(isPresented: $isPresented)
-                            .padding(.top, 80)
-                            .toolbar {
-                                ToolbarItem(placement: .cancellationAction) {
-                                    Button {
-                                        isPresented = false
-                                    } label: {
-                                        Text("닫기")
-                                            .font(.body1Medium)
-                                            .foregroundStyle(Color.whiteOpacity700)
-                                    }
+                    UploadConfirmView(isPresented: $isPresented)
+                        .padding(.top, 80)
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button {
+                                    isPresented = false
+                                } label: {
+                                    Text("닫기")
+                                        .font(.body1Medium)
+                                        .foregroundStyle(Color.whiteOpacity700)
                                 }
                             }
-                    } else {
-                        UploadingFileView(taskList: $viewModel.uploadedFiles, taskDescription: $viewModel.taskDescription) {
+                        }
+                }
+                .background(Image("gradient").clipped())
+                .background(Color.darkBackground)
+            } else {
+                ScrollViewReader { proxy in
+                    ScrollView(.vertical) {
+                        UploadingFileView(taskList: $viewModel.uploadedFiles) {
                             openFilePicker = true
+                        } removeFile: { file in
+                            viewModel.removeFile(file)
                         } finishUploading: { time in
                             Task {
                                 await viewModel.submitTask(with: time.rawValue)
                             }
                         }
+                        .fileImporter(isPresented: $openFilePicker, allowedContentTypes: [.pdf, .movie], allowsMultipleSelection: true) { result in
+                            guard let urlList = try? result.get() else { return }
+                            for url in urlList {
+                                viewModel.addFile(url)
+                            }
+                        }
                         
-                        // Task Description Input
-                        if isEditing {
-                            VStack(spacing: 0) {
+                        if isFocused {
+                            VStack(spacing: 16) {
                                 Spacer()
-                                HStack {
-                                    Text("⛳️")
-                                    Text("학습 목적에 맞게 요약해드릴게요")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(.gray)
+                                Text("⛳️ 학습 목적에 맞게 요약해드릴게요")
+                                    .font(.body1Regular)
+                                    .foregroundStyle(Color.gray50)
+                            }
+                        }
+                        
+                        Spacer().frame(height: 16)
+                        
+                        MessageField(text: $taskDescription, placeholder: "배우고 싶은 목적은?") {
+                            withAnimation(.easeInOut) {
+                                //showTimeSelectionPopup = true
+                            }
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, isFocused ? 20 : 6)
+                        .focused($isFocused)
+                        .onTapGesture {
+                            isFocused = true
+                        }
+                        .id(textFieldId)
+                    }
+                    .onChange(of: isFocused) { _, newValue in
+                        if newValue {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                withAnimation {
+                                    proxy.scrollTo(textFieldId, anchor: .bottom)
                                 }
-                                .padding(.vertical, 8)
-                                .padding(.horizontal)
-                                .frame(maxWidth: .infinity)
-                                .background(Color(.systemBackground))
-                                
-                                HStack {
-                                    TextField("시험공부를 위해", text: $viewModel.taskDescription)
-                                        .focused($isFocused)
-                                        .textFieldStyle(PlainTextFieldStyle())
-                                        .padding(.horizontal)
-                                    
-                                    Button(action: {
-                                        isFocused = false
-                                        isEditing = false
-                                    }) {
-                                        HStack(spacing: 4) {
-                                            Text("완료")
-                                            Image(systemName: "chevron.right")
-                                        }
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, 16)
-                                        .padding(.vertical, 8)
-                                        .background(Color.blue)
-                                        .cornerRadius(20)
-                                    }
-                                    .padding(.trailing)
-                                }
-                                .padding(.vertical, 8)
-                                .background(Color(.systemBackground))
                             }
                         }
                     }
+                    .onTapGesture {
+                        isFocused = false
+                    }
                 }
-            }
-            .fileImporter(isPresented: $openFilePicker, allowedContentTypes: [.pdf, .movie], allowsMultipleSelection: true) { result in
-                guard let urlList = try? result.get() else { return }
-                for url in urlList {
-                    viewModel.addFile(url)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button {
+                            isPresented = false
+                        } label: {
+                            Text("취소")
+                                .font(.body1Medium)
+                                .foregroundStyle(Color.whiteOpacity700)
+                        }
+                    }
                 }
+                .background(Image("gradient").clipped())
+                .background(Color.darkBackground)
             }
-            .animation(.default, value: isEditing)
         }
     }
 }

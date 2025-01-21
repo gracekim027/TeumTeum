@@ -11,7 +11,7 @@ struct UploadedFileCell: View {
     
     let file: UploadedFile
     let state: FileState
-    var onDelete: () -> Void = {}
+    var onDelete: (() -> Void)?
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -38,19 +38,21 @@ struct UploadedFileCell: View {
                         .foregroundStyle(Color.gray500)
                 }
             }
-            
             Spacer()
-            
             HStack {
                 Spacer()
+                Button {
+                    onDelete?()
+                } label: {
+                    Text(state == .uploading ? "삭제" : "대기중")
+                        .font(.body2SemiBold)
+                        .foregroundStyle(state == .uploading ? Color.red500 : Color.gray700)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                }
                 
-                Text(state == .uploading ? "삭제" : "대기중")
-                    .font(.body2SemiBold)
-                    .foregroundStyle(state == .uploading ? Color.red500 : Color.gray700)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Color.whiteOpacity700)
-                    .clipShape(RoundedRectangle(cornerRadius: 100))
+                .background(Color.whiteOpacity700)
+                .clipShape(RoundedRectangle(cornerRadius: 100))
             }
         }
         .padding(12)
