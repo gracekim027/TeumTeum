@@ -19,19 +19,21 @@ struct MessageField: View {
         HStack {
             TextField("", text: $text, prompt: Text(placeholder)
                 .font(.body1SemiBold)
-                .foregroundStyle(Color.grayOpacity700))
-                .font(.body1SemiBold)
-                .focused($isFocused)
-                .onTapGesture {
-                    isFocused = true
-                }
+                .foregroundStyle(Color.grayOpacity700)
+            )
+            .font(.body1SemiBold)
+            .foregroundStyle(Color.gray900)
+            .focused($isFocused)
+            .onTapGesture {
+                isFocused = true
+            }
             
             Spacer()
             
             Button {
                 send()
             } label: {
-                Image(isFocused ? "paperplane" : "paperplane-disabled")
+                Image((isFocused && !text.isEmpty) ? "paperplane" : "paperplane-disabled")
                     .resizable()
                     .frame(width: 28, height: 28)
             }

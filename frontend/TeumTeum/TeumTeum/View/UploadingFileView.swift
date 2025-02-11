@@ -47,6 +47,7 @@ struct UploadingFileView: View {
                     }
                 }
                 .padding(16)
+                .ignoresSafeArea(.keyboard)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.whiteOpacity100)
                 .clipShape(RoundedRectangle(cornerRadius: 16))

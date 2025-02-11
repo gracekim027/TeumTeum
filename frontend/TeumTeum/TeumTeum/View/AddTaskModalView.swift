@@ -40,60 +40,69 @@ struct AddTaskModalView: View {
                 .background(Image("gradient").clipped())
                 .background(Color.darkBackground)
             } else {
-                VStack(spacing: 0) {
-                    UploadingFileView(taskList: $viewModel.uploadedFiles) {
-                        openFilePicker = true
-                    } removeFile: { file in
-                        viewModel.removeFile(file)
-                    } finishUploading: { time in
-                        Task {
-                            await viewModel.submitTask(with: time.rawValue)
+                ZStack {
+                    VStack(spacing: 0) {
+                        UploadingFileView(taskList: $viewModel.uploadedFiles) {
+                            openFilePicker = true
+                        } removeFile: { file in
+                            viewModel.removeFile(file)
+                        } finishUploading: { time in
+                            Task {
+                                await viewModel.submitTask(with: time.rawValue)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .fileImporter(isPresented: $openFilePicker,
+                                      allowedContentTypes: [.pdf, .movie],
+                                      allowsMultipleSelection: true) { result in
+                            guard let urlList = try? result.get() else { return }
+                            urlList.forEach { viewModel.addFile($0) }
                         }
                     }
-                    .fileImporter(isPresented: $openFilePicker, allowedContentTypes: [.pdf, .movie], allowsMultipleSelection: true) { result in
-                        guard let urlList = try? result.get() else { return }
-                        for url in urlList {
-                            viewModel.addFile(url)
+                    .onTapGesture {
+                        isFocused = false
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button {
+                                isPresented = false
+                            } label: {
+                                Text("취소")
+                                    .font(.body1Medium)
+                                    .foregroundStyle(Color.whiteOpacity700)
+                            }
                         }
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.bottom, 64)
+                    .ignoresSafeArea(.keyboard)
                     
                     if isFocused {
-                        VStack(spacing: 16) {
-                            Spacer()
+                        Color.black.opacity(0.7)
+                            .ignoresSafeArea(.all)
+                            .onTapGesture {
+                                isFocused = false
+                            }
+                    }
+                    
+                    VStack(spacing: 16) {
+                        Spacer()
+                        if isFocused {
                             Text("⛳️ 학습 목적에 맞게 요약해드릴게요")
                                 .font(.body1Regular)
                                 .foregroundStyle(Color.gray50)
                         }
-                    }
-                    
-                    Spacer().frame(height: 16)
-                    
-                    MessageField(text: $taskDescription, placeholder: "배우고 싶은 목적은?") {
-                        withAnimation(.easeInOut) {
-                            //showTimeSelectionPopup = true
+                        MessageField(text: $taskDescription, placeholder: "배우고 싶은 목적은?") {
+                            withAnimation(.easeInOut) {
+                                //showTimeSelectionPopup = true
+                            }
                         }
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, isFocused ? 20 : 6)
-                    .focused($isFocused)
-                    .onTapGesture {
-                        isFocused = true
-                    }
-                    .id(textFieldId)
-                }
-                .onTapGesture {
-                    isFocused = false
-                }
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button {
-                            isPresented = false
-                        } label: {
-                            Text("취소")
-                                .font(.body1Medium)
-                                .foregroundStyle(Color.whiteOpacity700)
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, isFocused ? 20 : 6)
+                        .focused($isFocused)
+                        .onTapGesture {
+                            isFocused = true
                         }
+                        .id(textFieldId)
                     }
                 }
                 .background(Image("gradient").clipped())
