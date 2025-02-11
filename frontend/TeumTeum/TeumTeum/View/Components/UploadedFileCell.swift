@@ -29,8 +29,7 @@ struct UploadedFileCell: View {
                 
                 Text(file.name)
                     .font(.body2Medium)
-                    .lineLimit(1)
-                    .foregroundColor(.primary)
+                    .foregroundColor(Color.gray900)
                 
                 if let detail = file.detail {
                     Text(detail)
@@ -50,7 +49,6 @@ struct UploadedFileCell: View {
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
                 }
-                
                 .background(Color.whiteOpacity700)
                 .clipShape(RoundedRectangle(cornerRadius: 100))
             }

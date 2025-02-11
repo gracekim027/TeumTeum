@@ -40,60 +40,50 @@ struct AddTaskModalView: View {
                 .background(Image("gradient").clipped())
                 .background(Color.darkBackground)
             } else {
-                ScrollViewReader { proxy in
-                    ScrollView(.vertical) {
-                        UploadingFileView(taskList: $viewModel.uploadedFiles) {
-                            openFilePicker = true
-                        } removeFile: { file in
-                            viewModel.removeFile(file)
-                        } finishUploading: { time in
-                            Task {
-                                await viewModel.submitTask(with: time.rawValue)
-                            }
-                        }
-                        .fileImporter(isPresented: $openFilePicker, allowedContentTypes: [.pdf, .movie], allowsMultipleSelection: true) { result in
-                            guard let urlList = try? result.get() else { return }
-                            for url in urlList {
-                                viewModel.addFile(url)
-                            }
-                        }
-                        
-                        if isFocused {
-                            VStack(spacing: 16) {
-                                Spacer()
-                                Text("⛳️ 학습 목적에 맞게 요약해드릴게요")
-                                    .font(.body1Regular)
-                                    .foregroundStyle(Color.gray50)
-                            }
-                        }
-                        
-                        Spacer().frame(height: 16)
-                        
-                        MessageField(text: $taskDescription, placeholder: "배우고 싶은 목적은?") {
-                            withAnimation(.easeInOut) {
-                                //showTimeSelectionPopup = true
-                            }
-                        }
-                        .padding(.horizontal, 24)
-                        .padding(.bottom, isFocused ? 20 : 6)
-                        .focused($isFocused)
-                        .onTapGesture {
-                            isFocused = true
-                        }
-                        .id(textFieldId)
-                    }
-                    .onChange(of: isFocused) { _, newValue in
-                        if newValue {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                withAnimation {
-                                    proxy.scrollTo(textFieldId, anchor: .bottom)
-                                }
-                            }
+                VStack(spacing: 0) {
+                    UploadingFileView(taskList: $viewModel.uploadedFiles) {
+                        openFilePicker = true
+                    } removeFile: { file in
+                        viewModel.removeFile(file)
+                    } finishUploading: { time in
+                        Task {
+                            await viewModel.submitTask(with: time.rawValue)
                         }
                     }
+                    .fileImporter(isPresented: $openFilePicker, allowedContentTypes: [.pdf, .movie], allowsMultipleSelection: true) { result in
+                        guard let urlList = try? result.get() else { return }
+                        for url in urlList {
+                            viewModel.addFile(url)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
+                    if isFocused {
+                        VStack(spacing: 16) {
+                            Spacer()
+                            Text("⛳️ 학습 목적에 맞게 요약해드릴게요")
+                                .font(.body1Regular)
+                                .foregroundStyle(Color.gray50)
+                        }
+                    }
+                    
+                    Spacer().frame(height: 16)
+                    
+                    MessageField(text: $taskDescription, placeholder: "배우고 싶은 목적은?") {
+                        withAnimation(.easeInOut) {
+                            //showTimeSelectionPopup = true
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, isFocused ? 20 : 6)
+                    .focused($isFocused)
                     .onTapGesture {
-                        isFocused = false
+                        isFocused = true
                     }
+                    .id(textFieldId)
+                }
+                .onTapGesture {
+                    isFocused = false
                 }
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
