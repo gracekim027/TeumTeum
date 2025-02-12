@@ -42,6 +42,6 @@ final class DIContainer {
         self.userService = UserServiceImpl(userRepository: userRepository)
         
         let taskRepository = TaskRepository(db: db)
-        self.taskService = TaskService(repository: taskRepository)
+        self.taskService = TaskService(repository: taskRepository, storageService: .init())
     }
 }

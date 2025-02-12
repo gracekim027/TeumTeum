@@ -23,77 +23,86 @@ struct TaskCardView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                HStack(spacing: 6) {
-                    RequiredTimeChip(requiredTime: todoGroup.unitTime)
-                    
-                    if let title = todoGroup.title {
-                        Text(title)
-                            .font(.title1SemiBold)
-                            .foregroundStyle(.white)
+            VStack(spacing: 0) {
+                headerSection()
+                
+                if mode == .normal || isExpanded,
+                   let articleList = todoGroup.articleList {
+    //                List(articleList, id: \.id) { article in
+    //                    NavigationLink {
+    //                        ArticleDetailView(todoGroup: todoGroup, selected: 0)
+    //                    } label: {
+    //                        ArticlePreviewCell(article: article)
+    //                    }
+    //                }
+                    VStack(spacing: 8) {
+                        ForEach(articleList, id: \.id) { article in
+                            ArticlePreviewCell(article: article)
+                                .onTapGesture {
+                                    showDetailView = true
+                                }
+    //                        NavigationLink {
+    //                            ArticleDetailView(todoGroup: todoGroup, selected: 0)
+    //                        } label: {
+    //                            ArticlePreviewCell(article: article)
+    //                        }
+                        }
                     }
-                }
-                
-                Spacer()
-                
-                Text("\(todoGroup.doneCount)")
-                    .font(.body3Regular)
-                    .foregroundStyle(Color.gray50) +
-                Text(" / \(todoGroup.articleList?.count ?? 0)개 완료")
-                    .font(.body3Regular)
-                    .foregroundStyle(Color.gray400)
-                
-                if mode == .expandable {
-                    Image("chevron")
-                        .rotationEffect(.degrees(isExpanded ? 180 : 0))
+                    .padding(.bottom, 20)
+                    .geometryGroup()
                 }
             }
-            .padding(.vertical, mode == .expandable ? 20 : 16)
-            .contentShape(Rectangle())
-            .onTapGesture {
-                if mode == .expandable {
-                    withAnimation {
-                        isExpanded.toggle()
-                    }
-                }
-            }
-            
-            if mode == .normal || isExpanded,
-               let articleList = todoGroup.articleList {
-//                List(articleList, id: \.id) { article in
-//                    NavigationLink {
-//                        ArticleDetailView(todoGroup: todoGroup, selected: 0)
-//                    } label: {
-//                        ArticlePreviewCell(article: article)
-//                    }
-//                }
-                VStack {
-                    ForEach(articleList, id: \.id) { article in
-                        ArticlePreviewCell(article: article)
-                            .onTapGesture {
-                                showDetailView = true
-                            }
-//                        NavigationLink {
-//                            ArticleDetailView(todoGroup: todoGroup, selected: 0)
-//                        } label: {
-//                            ArticlePreviewCell(article: article)
-//                        }
-                    }
-                }
-                .padding(.bottom, 20)
-            }
+            .geometryGroup()
+            .transition(.asymmetric(insertion: .push(from: .top).combined(with: .opacity),
+                                    removal: .move(edge: .bottom).combined(with: .opacity)))
             
             if mode == .expandable {
-                Rectangle()
-                    .foregroundStyle(Color.whiteOpacity200)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 1)
+                CustomDivider()
             }
         }
         .sheet(isPresented: $showDetailView) {
             ArticleDetailView(todoGroup: todoGroup, selected: 0)
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
+        }
+    }
+}
+
+extension TaskCardView {
+    @ViewBuilder private func headerSection() -> some View {
+        HStack(spacing: 0) {
+            HStack(spacing: 6) {
+                RequiredTimeChip(requiredTime: todoGroup.unitTime)
+                
+                if let title = todoGroup.title {
+                    Text(title)
+                        .font(.title1SemiBold)
+                        .foregroundStyle(.white)
+                }
+            }
+            
+            Spacer()
+            
+            Text("\(todoGroup.doneCount)")
+                .font(.body3Regular)
+                .foregroundStyle(Color.gray50) +
+            Text(" / \(todoGroup.articleList?.count ?? 0)개 완료")
+                .font(.body3Regular)
+                .foregroundStyle(Color.gray400)
+            
+            if mode == .expandable {
+                Image("chevron")
+                    .rotationEffect(.degrees(isExpanded ? 180 : 0))
+            }
+        }
+        .padding(.vertical, mode == .expandable ? 20 : 16)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if mode == .expandable {
+                withAnimation(.smooth(duration: 0.45)) {
+                    isExpanded.toggle()
+                }
+            }
         }
     }
 }

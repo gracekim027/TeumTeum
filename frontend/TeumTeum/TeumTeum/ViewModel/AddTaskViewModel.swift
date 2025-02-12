@@ -70,11 +70,12 @@ final class AddTaskViewModel: ViewModel, ObservableObject {
     
     @MainActor
     func submitTask(with time: Int) async {
-        guard let fileInfo = uploadedFiles.first else {
-            error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Please upload a file"])
-            return
-        }
-        
+        /// for debug
+//        container.taskService.appendQueuedFileList(uploadedFiles)
+//        self.showConfirmation = true
+//        return
+        guard let fileInfo = uploadedFiles.first else { return }
+        container.taskService.appendQueuedFileList(uploadedFiles)
         isLoading = true
         
         do {
