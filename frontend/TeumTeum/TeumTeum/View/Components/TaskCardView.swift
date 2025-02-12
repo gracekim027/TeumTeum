@@ -84,10 +84,7 @@ struct TaskCardView: View {
             }
             
             if mode == .expandable {
-                Rectangle()
-                    .foregroundStyle(Color.whiteOpacity200)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 1)
+                CustomDivider()
             }
         }
         .sheet(isPresented: $showDetailView) {

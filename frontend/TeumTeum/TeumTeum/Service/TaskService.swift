@@ -14,20 +14,15 @@ class TaskService {
     private let repository: TaskRepository
     private let storageService: StorageService
     
-    init(repository: TaskRepository,
-         storageService: StorageService = StorageService()) {
+    init(repository: TaskRepository, storageService: StorageService) {
         self.repository = repository
         self.storageService = storageService
     }
     
     func createTask(description: String, unitTime: Int, fileInfo: UploadedFile) async throws -> String {
         print("[TaskService] created task")
-    
         do {
-            guard let originalURL = fileInfo.getURL() else {
-                throw NSError(domain: "TaskService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
-            }
-            
+            guard let originalURL = fileInfo.getURL() else { return "" }
             let downloadURL = try await storageService.uploadFile(url: originalURL, type: fileInfo.type)
             
             // Create a new UploadedFile with the Firebase Storage URL
@@ -39,9 +34,7 @@ class TaskService {
                 unitTime: unitTime,
                 fileInfo: storedFile
             )
-            
             return taskId
-            
         } catch {
             print("[TaskService] Error in createTask method:")
             print("  Error: \(error.localizedDescription)")
