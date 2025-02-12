@@ -19,15 +19,22 @@ struct MainView: View {
             Image("logo-text-short")
                 .padding(.vertical, 24)
             
-            // Queued Task List
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: 16) {
-                    
+            if !viewModel.queuedFileList.isEmpty {
+                // Queued Task List
+                ScrollView(.horizontal) {
+                    LazyHStack(spacing: 16) {
+                        ForEach(viewModel.queuedFileList, id: \.self) { files in
+                            if let thumbnailFile = files.first {
+                                UploadedFileCell(file: thumbnailFile, state: .waiting, totalFileCount: files.count)
+                            }
+                        }
+                    }
                 }
+                .padding(.bottom, 24)
+                .frame(height: 164)
+                
+                CustomDivider()
             }
-            .padding(.bottom, 24)
-            
-            CustomDivider()
             
             List(viewModel.todoGroupList, id: \.id) {
                 TaskCardView(todoGroup: $0, mode: .expandable)

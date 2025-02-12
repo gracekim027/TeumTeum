@@ -12,7 +12,7 @@ enum FileType: String, Codable {
     case mp3
 }
 
-struct UploadedFile: Identifiable, Codable {
+struct UploadedFile: Identifiable, Codable, Hashable {
     let id: String
     let name: String
     var detail: String? = nil

@@ -5,18 +5,22 @@
 //  Created by Grace Kim on 1/11/25.
 //
 
-import SwiftUI
 import FirebaseFirestore
-
 import SwiftUI
 
-class TaskService {
+final class TaskService {
     private let repository: TaskRepository
     private let storageService: StorageService
+    
+    @Published var queuedFileList: [[UploadedFile]] = []
     
     init(repository: TaskRepository, storageService: StorageService) {
         self.repository = repository
         self.storageService = storageService
+    }
+    
+    func appendQueuedFileList(_ fileList: [UploadedFile]) {
+        queuedFileList.append(fileList)
     }
     
     func createTask(description: String, unitTime: Int, fileInfo: UploadedFile) async throws -> String {
