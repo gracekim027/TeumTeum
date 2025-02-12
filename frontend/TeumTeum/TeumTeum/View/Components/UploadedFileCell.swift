@@ -11,6 +11,7 @@ struct UploadedFileCell: View {
     
     let file: UploadedFile
     let state: FileState
+    var totalFileCount: Int?
     var onDelete: (() -> Void)?
     
     var body: some View {
@@ -29,11 +30,11 @@ struct UploadedFileCell: View {
                 
                 Text(file.name)
                     .font(.body2Medium)
-                    .lineLimit(1)
-                    .foregroundColor(.primary)
+                    .foregroundColor(Color.gray900)
+                    .multilineTextAlignment(.leading)
                 
-                if let detail = file.detail {
-                    Text(detail)
+                if state == .waiting, let totalFileCount = totalFileCount {
+                    Text("외 \(totalFileCount - 1)개의 파일")
                         .font(.caption1Medium)
                         .foregroundStyle(Color.gray500)
                 }
@@ -50,7 +51,6 @@ struct UploadedFileCell: View {
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
                 }
-                
                 .background(Color.whiteOpacity700)
                 .clipShape(RoundedRectangle(cornerRadius: 100))
             }
