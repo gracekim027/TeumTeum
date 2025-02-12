@@ -13,12 +13,9 @@ struct UploadingFileView: View {
     
     let showFilePicker: () -> Void
     let removeFile: (UploadedFile) -> Void
-    let finishUploading: (RequiredTime) -> Void
     
     private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible())]
     
-    @State private var selectedTime: RequiredTime?
-    @State private var showTimeSelectionPopup: Bool = false
     @FocusState private var isFocused: Bool
     
     var body: some View {
@@ -59,16 +56,6 @@ struct UploadingFileView: View {
             .padding(.top, 28)
             .padding(.horizontal, 24)
             .padding(.bottom, 6)
-            
-            if showTimeSelectionPopup {
-                Color.black.opacity(0.7)
-                    .ignoresSafeArea(.all)
-                TimeSelectionView(isPresented: $showTimeSelectionPopup, selectedTime: $selectedTime) {
-                    if let selectedTime = selectedTime {
-                        finishUploading(selectedTime)
-                    }
-                }
-            }
         }
     }
 }

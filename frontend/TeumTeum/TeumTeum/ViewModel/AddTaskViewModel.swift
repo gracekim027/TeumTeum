@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 
 @MainActor
-class AddTaskViewModel: ViewModel, ObservableObject {
+final class AddTaskViewModel: ViewModel, ObservableObject {
     
     @Published var showConfirmation = false
     @Published var taskDescription = ""
